@@ -2,7 +2,7 @@ package lab5;
 
 public interface Promocao {
 
-	public String getPrecoComPromo();
+	String getPrecoComPromo();
 	
-	public double aplicaPromo(double preco, double fator);
+	double aplicaPromo(double preco, double fator);
 }

@@ -66,7 +66,7 @@ public class GestorProdutos {
 	 */
 	protected void verificadorFator(String fator, String saida) {
 		double fatorDouble = Double.parseDouble(fator);
-		if (1 <= fatorDouble || fatorDouble <= 0)
+		if (1 <= fatorDouble || fatorDouble < 0)
 			throw new Error(saida);
 	}
 

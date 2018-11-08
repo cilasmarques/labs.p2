@@ -1,0 +1,52 @@
+## Cadastrando produtos  ##
+
+adicionaProduto fornecedor="Seu Olavo" nome="X-frango" descricao="Hamburguer de frango com queijo e calabresa" preco=5.00
+adicionaProduto fornecedor="Seu Olavo" nome="X-burguer" descricao="Hamburguer de carne com queijo e calabresa" preco=4.50
+adicionaProduto fornecedor="Dona Alba" nome="Rubacao" descricao="Feijao com arroz e queijo coalho" preco=14.00
+adicionaProduto fornecedor="Marcos" nome="Coxao de Pizza" descricao="Coxao de frango com presunto e queijo" preco=2.50
+adicionaProduto fornecedor="Marcos" nome="Coxao de Frango" descricao="Coxao de frango com cheddar" preco=2.50
+
+expectError "Erro no cadastro de produto: fornecedor nao existe." adicionaProduto fornecedor="Helhao" nome="Tapioca com frango" descricao="Tapioca com queijo, manteiga e frango" preco=5.00
+expectError "Erro no cadastro de produto: nome nao pode ser vazio ou nulo." adicionaProduto fornecedor="Marcos" nome="" descricao="Pastel doce de carne" preco=2.00
+expectError "Erro no cadastro de produto: descricao nao pode ser vazia ou nula." adicionaProduto fornecedor="Marcos" nome="Pastel doce" descricao="" preco=2.00
+expectError "Erro no cadastro de produto: fornecedor nao pode ser vazio ou nulo." adicionaProduto fornecedor="" nome="Pastel doce" descricao="Pastel doce de carne" preco=2.00
+expectError "Erro no cadastro de produto: preco invalido." adicionaProduto fornecedor="Marcos" nome="Pastel doce" descricao="Pastel doce de carne" preco=-1
+expectError "Erro no cadastro de produto: produto ja existe." adicionaProduto fornecedor="Seu Olavo" nome="X-frango" descricao="Hamburguer de frango com queijo e calabresa" preco=4.50
+
+## Exibindo produtos ##
+
+expect "X-frango - Hamburguer de frango com queijo e calabresa - R$5,00" exibeProduto nome="X-frango" descricao="Hamburguer de frango com queijo e calabresa" fornecedor="Seu Olavo"
+expect "X-burguer - Hamburguer de carne com queijo e calabresa - R$4,50" exibeProduto nome="X-burguer" descricao="Hamburguer de carne com queijo e calabresa" fornecedor="Seu Olavo"
+expect "Marcos - Coxao de Frango - Coxao de frango com cheddar - R$2,50 | Marcos - Coxao de Pizza - Coxao de frango com presunto e queijo - R$2,50" exibeProdutosFornecedor fornecedor="Marcos"
+expect "Dona Alba - Rubacao - Feijao com arroz e queijo coalho - R$14,00 | Marcos - Coxao de Frango - Coxao de frango com cheddar - R$2,50 | Marcos - Coxao de Pizza - Coxao de frango com presunto e queijo - R$2,50 | Seu Olavo - X-burguer - Hamburguer de carne com queijo e calabresa - R$4,50 | Seu Olavo - X-frango - Hamburguer de frango com queijo e calabresa - R$5,00" exibeProdutos
+
+expectError "Erro na exibicao de produto: nome nao pode ser vazio ou nulo." exibeProduto nome="" descricao="Hamburguer de carne com queijo e calabresa" fornecedor="Seu Olavo"
+expectError "Erro na exibicao de produto: fornecedor nao existe." exibeProduto nome="X-frango" descricao="Hamburguer de frango com queijo" fornecedor="Helhao"
+expectError "Erro na exibicao de produto: fornecedor nao pode ser vazio ou nulo." exibeProduto nome="X-frango" descricao="Hamburguer de frango com queijo" fornecedor=""
+expectError "Erro na exibicao de produto: descricao nao pode ser vazia ou nula." exibeProduto nome="X-frango" descricao="" fornecedor="Seu Olavo"
+expectError "Erro na exibicao de produto: produto nao existe." exibeProduto nome="Misto quente" descricao="Sanduiche de queijo, presunto e manteiga" fornecedor="Seu Olavo"
+
+## Editando produtos ##
+
+editaProduto nome="X-frango" descricao="Hamburguer de frango com queijo e calabresa" fornecedor="Seu Olavo" novoPreco=3.50
+editaProduto nome="Rubacao" descricao="Feijao com arroz e queijo coalho" fornecedor="Dona Alba" novoPreco=17.00
+expect "X-frango - Hamburguer de frango com queijo e calabresa - R$3,50" exibeProduto nome="X-frango" descricao="Hamburguer de frango com queijo e calabresa" fornecedor="Seu Olavo"
+expect "Rubacao - Feijao com arroz e queijo coalho - R$17,00" exibeProduto nome="Rubacao" descricao="Feijao com arroz e queijo coalho" fornecedor="Dona Alba"
+
+expectError "Erro na edicao de produto: fornecedor nao existe." editaProduto nome="X-frango" descricao="Hamburguer de frango com queijo" fornecedor="Helhao" novoPreco=5.50
+expectError "Erro na edicao de produto: preco invalido." editaProduto nome="X-frango" descricao="Hamburguer de frango com queijo" fornecedor="Seu Olavo" novoPreco=-1
+expectError "Erro na edicao de produto: descricao nao pode ser vazia ou nula." editaProduto nome="X-frango" descricao="" fornecedor="Seu Olavo" novoPreco=3.00
+expectError "Erro na edicao de produto: nome nao pode ser vazio ou nulo." editaProduto nome="" descricao="Hamburguer de frango com queijo" fornecedor="Seu Olavo" novoPreco=3.00
+expectError "Erro na edicao de produto: fornecedor nao pode ser vazio ou nulo." editaProduto nome="Seu Olavo" descricao="Hamburguer de frango com queijo" fornecedor="" novoPreco=3.00
+
+## Removendo produtos ##
+
+removeProduto nome="X-frango" descricao="Hamburguer de frango com queijo e calabresa" fornecedor="Seu Olavo"
+expect "Seu Olavo - X-burguer - Hamburguer de carne com queijo e calabresa - R$4,50" exibeProdutosFornecedor fornecedor="Seu Olavo"
+expect "Dona Alba - Rubacao - Feijao com arroz e queijo coalho - R$17,00 | Marcos - Coxao de Frango - Coxao de frango com cheddar - R$2,50 | Marcos - Coxao de Pizza - Coxao de frango com presunto e queijo - R$2,50 | Seu Olavo - X-burguer - Hamburguer de carne com queijo e calabresa - R$4,50" exibeProdutos
+
+expectError "Erro na remocao de produto: produto nao existe." removeProduto nome="X-frango" descricao="Hamburguer de frango com queijo e calabresa" fornecedor="Seu Olavo"
+expectError "Erro na remocao de produto: nome nao pode ser vazio ou nulo." removeProduto nome="" descricao="Sanduiche com presunto, queijo e manteiga" fornecedor="Seu Olavo"
+expectError "Erro na remocao de produto: descricao nao pode ser vazia ou nula." removeProduto nome="X-frango" descricao="" fornecedor="Seu Olavo"
+expectError "Erro na remocao de produto: fornecedor nao pode ser vazio ou nulo." removeProduto nome="X-frango" descricao="Hamburguer de frango com queijo e calabresa" fornecedor=""
+expectError "Erro na remocao de produto: fornecedor nao existe." removeProduto nome="X-frango" descricao="Hamburguer de frango com queijo e calabresa" fornecedor="Helhao"

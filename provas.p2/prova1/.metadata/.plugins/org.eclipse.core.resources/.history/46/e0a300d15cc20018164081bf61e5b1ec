@@ -1,0 +1,46 @@
+package cilas_medeiros_prova1;
+
+import java.time.LocalTime;
+
+public class Vaga {
+	
+	private LocalTime inicio;
+	
+	private String setor;
+	private int posicao;
+	private String placaCarro;
+	private int horas;
+	private boolean status;
+	
+	public Vaga(String setor, int posicao) {
+		this.setor = setor;
+		this.posicao = posicao;
+	}
+	
+	public boolean ocupaVaga(int horaEntrada, String placa) {
+		inicio = LocalTime.now();
+		return true;
+	}
+	
+	public void getInfo() {
+	/*
+	 * localização(posicao e setor) status	
+	 */
+	}
+	
+	public boolean getStatus(){
+		if (ocupaVaga()) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean setStatus(boolean newStatus) {
+		return this.status = newStatus;
+	}
+
+	public int getHoras() {
+		return inicio.getHour();
+	}
+	
+}

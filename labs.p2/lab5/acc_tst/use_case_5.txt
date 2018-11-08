@@ -1,0 +1,63 @@
+## Cadastrando compras ##
+
+adicionaCompra cpf=19418510068 fornecedor="Marcos" data="03/12/2013" nome_prod="Coxao com batata" desc_prod="Coxao de frango com batata frita"
+adicionaCompra cpf=19418510068 fornecedor="Marcos" data="03/06/2017" nome_prod="Refrigerante" desc_prod="Refrigerante (lata)"
+adicionaCompra cpf=64269141198 fornecedor="Marcos" data="01/11/2016" nome_prod="Refrigerante" desc_prod="Refrigerante (lata)"
+adicionaCompra cpf=64269141198 fornecedor="Seu Olavo" data="02/04/2015" nome_prod="Suco" desc_prod="Suco de maracuja (copo)"
+adicionaCompra cpf=58217738123 fornecedor="Dona Alba" data="11/11/2011" nome_prod="Rubacao" desc_Prod="Feijao com arroz e queijo coalho" 
+adicionaCompra cpf=58217738123 fornecedor="Marcos" data="07/04/1998" nome_prod="Coxao de Pizza" desc_prod="Coxao de frango com presunto e queijo" 
+adicionaCompra cpf=64269141198 fornecedor="Marcos" data="01/11/2016" nome_prod="Coxao de Frango" desc_prod="Coxao de frango com cheddar"
+adicionaCompra cpf=58217738123 fornecedor="Marcos" data="11/12/1998" nome_prod="Refrigerante" desc_prod="Refrigerante (lata)"
+
+expectError "Erro ao cadastrar compra: cpf invalido." adicionaCompra cpf=142144 fornecedor="Seu Olavo" data="04/02/1999" nome_prod="Coxao com batata" desc_prod="Coxao com batata frita"
+expectError "Erro ao cadastrar compra: cliente nao existe." adicionaCompra cpf=58217738498 fornecedor="Seu Olavo" data="04/02/1999" nome_prod="Coxao com batata" desc_prod="Coxao com batata frita"
+expectError "Erro ao cadastrar compra: fornecedor nao existe." adicionaCompra cpf=58217738123 fornecedor="Helhao" data="03/02/2002" nome_prod="Batata frita" desc_prod="Porcao de batata frita"
+expectError "Erro ao cadastrar compra: fornecedor nao pode ser vazio ou nulo." adicionaCompra cpf=64269141198 fornecedor="" data="07/07/2007" nome_prod"Coca-coca" desc_prod="Coca-cola (lata)"
+expectError "Erro ao cadastrar compra: data invalida." adicionaCompra cpf=19418510068 fornecedor="Marcos" data="04/103/2018" nome_prod="Rubacao" desc_prod="Feijao com arroz e queijo coalho"
+expectError "Erro ao cadastrar compra: data nao pode ser vazia ou nula." adicionaCompra cpf=58217738123 fornecedor="" data="" nome_prod="Coxao com batata" desc_prod="Coxao de frango com batata frita"
+expectError "Erro ao cadastrar compra: nome do produto nao pode ser vazio ou nulo." adicionaCompra cpf=64269141198 fornecedor="Marcos" data="04/05/2008" nome_pro="" desc_prod="Porcao de batata frita"
+expectError "Erro ao cadastrar compra: produto nao existe." adicionaCompra cpf=19418510068 fornecedor="Seu Olavo" data="12/12/2004" nome_prod="Batata frita" desc_prod="Porcao de batata frita"
+expectError "Erro ao cadastrar compra: descricao do produto nao pode ser vazia ou nula" adicionaCompra cpf=58217738123 fornecedor="Dona Alba" data="28/06/2007" nome_prod="Rubacao" desc_prod=""
+expectError "Erro ao cadastrar compra: produto nao existe." adicionaCompra cpf=64269141198 fornecedor="Seu Olavo" data="22/11/2009" nome_prod="Coca-cola" desc_prod="Coca-cola (garrafa)"
+
+
+## Totalizando conta de um fornecedor ##
+
+expect 5.00 getDebito cpf=64269141198 fornecedor="Marcos"
+expect 1.50 getDebito cpf=64269141198 fornecedor="Seu Olavo"
+expect 17.00 getDebito cpf=58217738123 fornecedor="Dona Alba"
+expect 5.00 getDebito cpf=58217738123 fornecedor="Marcos"
+
+
+expectError "Erro ao recuperar debito: cliente nao existe." getDebito cpf=12345678919 fornecedor="Marcos"
+expectError "Erro ao recuperar debito: cpf invalido." getDebito cpf=98142 fornecedor="Marcos"
+expectError "Erro ao recuperar debito: fornecedor nao pode ser vazio ou nulo." getDebito cpf=64269141198 fornecedor=""
+expectError "Erro ao recuperar debito: fornecedor nao existe." getDebito cpf=19418510068 fornecedor="Frango Feliz"
+expectError "Erro ao recuperar debito: cliente nao tem debito com fornecedor." getDebito cpf=19418510068 fornecedor="Dona Alba"
+
+## Exibindo conta cliente ##
+
+expect "Cliente: Amigao Fernandes | Marcos | Coxao com batata - 03-12-2013 | Refrigerante - 03-06-2017" exibeContas cpf=19418510068 fornecedor="Marcos" 
+expect "Cliente: Ana Amari | Marcos | Refrigerante - 01-11-2016 | Coxao de Frango - 01-11-2016" exibeContas cpf=64269141198 fornecedor="Seu Olavo"
+expect "Cliente: Lucio Correia | Marcos | Coxao de Pizza - 07-04-1998" exibeContas cpf=58217738123 fornecedor="Marcos"
+expect "Cliente: Ana Amari | Seu Olavo | Suco - 02-04-2015" exibeContas cpf=64269141198 fornecedor="Seu Olavo"
+
+expectError "Erro ao exibir conta do cliente: cpf invalido." exibeContas cpf=19274 fornecedor="Seu Olavo"
+expectError "Erro ao exibir conta do cliente: cliente nao existe." exibeContas cpf=84969141198 fornecedor="Seu Olavo"
+expectError "Erro ao exibir conta do cliente: fornecedor nao pode ser vazio ou nulo." exibeContas cpf=58217738123 fornecedor=""
+expectError "Erro ao exibir conta do cliente: fornecedor nao existe." exibeContas cpf=64269141198 fornecedor="Anel universitario"
+expectError "Erro ao exibir conta do cliente: cliente nao tem nenhuma conta com o fornecedor." exibeContas cpf=19418510068 fornecedor="Dona Alba"
+
+## Exibindo contas clientes ##
+
+expect "Cliente: Lucio Correia | Dona Alba | Rubacao - 01-11-2011 | Marcos | Coxao de Pizza - 07-04-1998" exibeContasCliente cpf=58217738123
+expect "Cliente: Ana Amari | Marcos | Coxao de Frango - 01-11-2016 | Refrigerante - 01-11-2016 | Seu Olavo | Suco - 02-04-2015" exibeContasClientes cpf=64269141198
+expect "Cliente: Amigao Fernandes | Marcos | Coxao com batata - 03-12-2013 | Refrigerante - 03-06-2017" exibeContasClientes cpf=19418510068
+
+expectError "Erro ao exibir contas do cliente: cpf invalido." exibeContas cpf=102487
+expectError "Erro ao exibir contas do cliente: cliente nao existe." cpf=12345678912
+
+adicionaCliente cpf=84591243910 nome="Joao McCree" email="joao_mccree@ccc.ufcg.edu.br" localizacao="SPG"
+
+expectError "Erro ao exibir contas do cliente: cliente nao tem nenhuma conta." cpf=84591243910
+

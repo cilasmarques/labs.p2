@@ -1,0 +1,59 @@
+package cilas_medeiros_prova1;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class VagaTest {
+
+	@Test
+	void testOcupouVaga() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testLiberouVaga() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetInfo() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetStatus() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSetStatus() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetHoras() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetPlacaCarro() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testEqualsObject() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testToString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetLocalizacao() {
+		fail("Not yet implemented");
+	}
+
+}

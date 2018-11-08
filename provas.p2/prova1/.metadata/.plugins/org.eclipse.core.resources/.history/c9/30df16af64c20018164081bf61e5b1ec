@@ -1,0 +1,70 @@
+package cilas_medeiros_prova1;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class VagaTest {
+
+	@Test
+	void testVagaOcupada() {
+		Vaga vaga = new Vaga("A", 5);
+		vaga.vagaOcupada(5, "RELAMPAGOMARQUINHOS");
+		assertEquals(vaga.getPlacaCarro(),"RELAMPAGOMARQUINHOS");
+		assertEquals(vaga.getStatus(),false);
+	}
+
+	@Test
+	void testVagaLiberada() {
+		Vaga vaga = new Vaga("A", 5);
+		vaga.vagaOcupada(5, "RELAMPAGOMARQUINHOS");
+		vaga.vagaLiberada();
+		assertEquals(vaga.getPlacaCarro(),"");
+	}
+
+	@Test
+	void testGetInfo() {
+		Vaga vaga = new Vaga("A", 5);
+		Vaga vaga2 = new Vaga("A", 6);
+		vaga.vagaOcupada(5, "RELAMPAGOMARQUINHOS");
+		assertEquals(vaga.getInfo(),"\nA-6 Vaga ocupada");
+		assertEquals(vaga2.getInfo(),"\nA-6 Vaga livre");
+	}
+
+	@Test
+	void testGetStatus() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSetStatus() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetHoras() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetPlacaCarro() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testEqualsObject() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testToString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetLocalizacao() {
+		fail("Not yet implemented");
+	}
+
+}

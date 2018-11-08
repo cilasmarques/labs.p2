@@ -1,0 +1,14 @@
+package cilas_medeiros_prova1;
+
+public class SistemaEstacionamento {
+	
+	private Vaga[] vagas;
+
+	public SistemaEstacionamento() {
+		Vaga[] vagas = new Vaga[50];
+	}
+	
+	public SistemaEstacionamento(int quantVagas) {
+		Vaga[] vagas = new Vaga[quantVagas];
+	}
+}

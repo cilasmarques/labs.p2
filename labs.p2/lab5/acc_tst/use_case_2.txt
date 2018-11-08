@@ -1,0 +1,45 @@
+## Cadastrando fornecedores ##
+
+fornecedor1=adicionaFornecedor nome="Marcos" email="marcos@gmail.com" telefone="83 99151-3570"
+fornecedor2=adicionaFornecedor nome="Helhao" email="quiosque@gmail.com" telefone="83 98736-5050"
+fornecedor3=adicionaFornecedor nome="Dona Alba" email="alba@gmail.com" telefone="83 99945-1294"
+fornecedor4=adicionaFornecedor nome="Seu Olavo" email="olavo@gmail.com" telefone="83 99348-1092"
+
+expectError "Erro no cadastro do fornecedor: nome nao pode ser vazio ou nulo." adicionaFornecedor nome="" email="marcos@gmail.com" telefone="83 99151-3570"
+expectError "Erro no cadastro do fornecedor: email nao pode ser vazio ou nulo." adicionaFornecedor nome="Anel Universitario" email="" telefone="83 99298-3231"
+expectError "Erro no cadastro de fornecedor: fornecedor ja existe." adicionaFornecedor nome="Marcos" email="marcos_ufcg@gmail.com" telefone="83 99211-3570"
+
+## Exibindo fornecedores ##
+
+expect "Marcos - marcos@gmail.com - 83 99151-3570" exibeFornecedor nome=${fornecedor1}
+expect "Helhao - quiosque@gmail.com - 83 98736-5050" exibeFornecedor nome=${fornecedor2}
+expect "Dona Alba - alba@gmail.com - 83 99945-1294" exibeFornecedor nome=${fornecedor3}
+expect "Seu Olavo - olavo@gmail.com - 83 99348-1092" exibeFornecedor nome=${fornecedor4}
+expectError "Erro na exibicao do fornecedor: fornecedor nao existe." exibeFornecedor nome="Anel Universitario"
+
+expect "Dona Alba - alba@gmail.com - 83 99945-1294 | Helhao - quiosque@gmail.com - 83 98736-5050 | Marcos - marcos@gmail.com - 83 99151-3570 | Seu Olavo - olavo@gmail.com - 83 99348-1092" exibeFornecedores
+
+## Editando cadastro ##
+
+expectError "Erro na edicao do fornecedor: nome nao pode ser editado." editaFornecedor nome=${fornecedor1} atributo="nome" novoValor="Lanchonete Marcos"
+expectError "Erro na edicao do fornecedor: atributo nao pode ser vazio ou nulo." editaFornecedor nome=${fornecedor1} atributo="" novoValor="Lanchonete Marcos"
+expectError "Erro na edicao do fornecedor: atributo nao existe." editaFornecedor nome=${fornecedor1} atributo="local" novoValor="Bloco CAA"
+expectError "Erro na edicao do fornecedor: novo valor nao pode ser vazio ou nulo." editaFornecedor nome=${fornecedor1} atributo="email" novoValor=""
+
+editaFornecedor nome=${fornecedor1} atributo="email" novoValor="marcos_lanchonete@gmail.com"
+editaFornecedor nome=${fornecedor1} atributo="telefone" novoValor="83 99931-9230"
+expect "Marcos - marcos_lanchonete@gmail.com - 83 99931-9230" exibeFornecedor nome=${fornecedor1}
+
+editaFornecedor nome=${fornecedor3} atributo="email" novoValor="varandas_bar@gmail.com"
+expect "Dona Alba - varandas_bar@gmail.com - 83 99945-1294" exibeFornecedor nome=${fornecedor3}
+
+expect "Dona Alba - varandas_bar@gmail.com - 83 99945-1294 | Helhao - quiosque@gmail.com - 83 98736-5050 | Marcos - marcos_lanchonete@gmail.com - 83 99931-9230 | Seu Olavo - olavo@gmail.com - 83 99348-1092" exibeFornecedores
+
+## Removendo cadastro ##
+
+expectError "Erro na remocao do fornecedor: nome do fornecedor nao pode ser vazio." removeFornecedor nome=""
+
+removeFornecedor nome=${fornecedor2}
+expectError "Erro na exibicao do fornecedor: fornecedor nao existe." exibeFornecedor nome=${fornecedor2}
+
+expect "Dona Alba - varandas_bar@gmail.com - 83 99945-1294 | Marcos - marcos_lanchonete@gmail.com - 83 99931-9230 | Seu Olavo - olavo@gmail.com - 83 99348-1092" exibeFornecedores

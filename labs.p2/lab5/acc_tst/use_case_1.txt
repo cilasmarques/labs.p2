@@ -1,0 +1,35 @@
+## Cadastrando clientes ##
+cliente1=adicionaCliente cpf=00023827490 nome="Victor Emanuel" email="vitao@ccc.ufcg.edu.br" localizacao="Labarc"
+cliente2=adicionaCliente cpf=94412783134 nome="Wilson Andre" email="wilson_andre@ccc.ufcg.edu.br" localizacao="Embedded"
+cliente3=adicionaCliente cpf=19418510068 nome="Amigao Fernandes" email="amigao_fernandes@ccc.ufcg.edu.br" localizacao="LSD"
+cliente4=adicionaCliente cpf=64269141198 nome="Ana Amari" email="ana_amari@ccc.ufcg.edu.br" localizacao="SPG"
+cliente5=adicionaCliente cpf=58217738123 nome="Lucio Correia" email="lucio_correia@ccc.ufcg.edu.br" localizacao="SPLab"
+expectError "Erro no cadastro do cliente: nome nao pode ser vazio ou nulo." adicionaCliente cpf=12314143100 nome=""  email="victor@ccc.ufcg.edu.br" localizacao="Analytics"
+expectError "Erro no cadastro do cliente: email nao pode ser vazio ou nulo." adicionaCliente cpf=14112354612 nome="Lucas Oliveira" email="" localizacao="PetComputacao"
+expectError "Erro no cadastro do cliente: localizacao nao pode ser vazia ou nula." adicionaCliente cpf=15551214299 nome="Ana Amaral" email="amaral_ana@ccc.ufcg.edu.br" localizacao=""
+expectError "Erro no cadastro do cliente: cliente ja existe." adicionaCliente cpf=64269141198 nome="Ana Livia" email="livia@ccc.ufcg.edu.br" localizacao="Vtex"
+expectError "Erro no cadastro do cliente: cpf invalido." adicionaCliente cpf=471821918247128947129 nome="Ana Mira" email="ana@ccc.ufcg.edu.br" localizacao="GetComp"
+expectError "Erro no cadastro do cliente: cpf invalido." adicionaCliente cpf=123455 nome="Gabriel Maracuja" email="gsmtech@ccc.ufcg.edu.br" localizacao="Propex"
+## Exibindo clientes ##
+expect "Victor Emanuel - Labarc - vitao@ccc.ufcg.edu.br" exibeCliente cpf=${cliente1}
+expect "Wilson Andre - Embedded - wilson_andre@ccc.ufcg.edu.br" exibeCliente cpf=${cliente2}
+expect "Amigao Fernandes - LSD - amigao_fernandes@ccc.ufcg.edu.br" exibeCliente cpf=${cliente3}
+expect "Ana Amari - SPG - ana_amari@ccc.ufcg.edu.br" exibeCliente cpf=${cliente4}
+expect "Lucio Correia - SPLab - lucio_correia@ccc.ufcg.edu.br" exibeCliente cpf=${cliente5}
+expectError "Erro na exibicao do cliente: cliente nao existe." exibeCliente cpf=12345678911
+expect "Amigao Fernandes - LSD - amigao_fernandes@ccc.ufcg.edu.br | Ana Amari - SPG - ana_amari@ccc.ufcg.edu.br | Lucio Correia - SPLab - lucio_correia@ccc.ufcg.edu.br | Victor Emanuel - Labarc - vitao@ccc.ufcg.edu.br | Wilson Andre - Embedded - wilson_andre@ccc.ufcg.edu.br" exibeClientes
+## Editando clientes ##
+editaCliente cpf=${cliente1} atributo="nome" novoValor="Vitao Farias"
+editaCliente cpf=${cliente2} atributo="email" novoValor="andre_wilson@ccc.ufcg.edu.br"
+editaCliente cpf=${cliente3} atributo="localizacao" novoValor="SPG"
+expect "Amigao Fernandes - SPG - amigao_fernandes@ccc.ufcg.edu.br | Ana Amari - SPG - ana_amari@ccc.ufcg.edu.br | Lucio Correia - SPLab - lucio_correia@ccc.ufcg.edu.br | Vitao Farias - Labarc - vitao@ccc.ufcg.edu.br | Wilson Andre - Embedded - andre_wilson@ccc.ufcg.edu.br" exibeClientes
+expectError "Erro na edicao do cliente: atributo nao existe." editaCliente cpf=00023827490 atributo="sobrenome" novoValor="Maia"
+expectError "Erro na edicao do cliente: atributo nao pode ser vazio ou nulo." editaCliente cpf=94412783134 atributo="" novoValor="Epol"
+expectError "Erro na edicao do cliente: novo valor nao pode ser vazio ou nulo." editaCliente cpf=19418510068 atributo="email" novoValor=""
+expectError "Erro na edicao do cliente: cliente nao existe." editaCliente cpf=11122233344 atributo="email" novoValor="lucio_correia@ccc.ufcg.edu.br"
+## Removendo clientes ##
+removeCliente cpf=${cliente1}
+removeCliente cpf=${cliente2}
+expect "Amigao Fernandes - SPG - amigao_fernandes@ccc.ufcg.edu.br | Ana Amari - SPG - ana_amari@ccc.ufcg.edu.br | Lucio Correia - SPLab - lucio_correia@ccc.ufcg.edu.br" exibeClientes
+expectError "Erro na exibicao do cliente: cliente nao existe." exibeCliente cpf=${cliente1}
+expectError "Erro na exibicao do cliente: cliente nao existe." exibeCliente cpf=${cliente2}

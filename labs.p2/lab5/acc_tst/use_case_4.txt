@@ -1,0 +1,94 @@
+# Adicionando mais alguns produtos #
+
+adicionaProduto fornecedor="Seu Olavo" nome="Suco" descricao="Suco de maracuja (copo)" preco=1.50
+adicionaProduto fornecedor="Seu Olavo" nome="Pastel de frango" descricao="Pastel de forno de frango" preco=2.00
+adicionaProduto fornecedor="Seu Olavo" nome="Coca-cola" descricao="Coca-cola (lata)" preco=3.00
+adicionaProduto fornecedor="Dona Alba" nome="Suco" descricao="Suco de goiaba (copo)" preco=2.00
+adicionaProduto fornecedor="Marcos" nome="Batata frita" descricao="Porcao de batata frita" preco=4.00
+adicionaProduto fornecedor="Marcos" nome="Refrigerante" descricao="Refrigerante (lata)" preco=2.50
+
+## Adicionando combos ##
+
+adicionaCombo fornecedor="Seu Olavo" nome="X-burguer + suco" descricao="X-burguer com suco de maracuja" fator=0.20 produtos="X-burguer - Hamburguer de carne com queijo e calabresa, Suco - Suco de maracuja (copo)"
+adicionaCombo fornecedor="Seu Olavo" nome="X-burguer + refrigerante" descricao="X-burguer com refri (lata)" fator=0.20 produtos="X-burguer - Hamburguer de carne com queijo e calabresa, Coca-cola - Coca-cola (lata)"
+adicionaCombo fornecedor="Dona Alba" nome="Rubacao com suco" descricao="Rubacao completo com suco" fator=0.15 produtos="Rubacao - Feijao com arroz e queijo coalho, Suco - Suco de goiaba (copo)"
+adicionaCombo fornecedor="Marcos" nome="Coxao com batata" descricao="Coxao de frango com batata frita" fator=0.30 produtos="Coxao de Frango - Coxao de frango com cheddar, Refrigerante - Refrigerante (lata)" 
+
+expectError "Erro no cadastro de combo: combo ja existe." adicionaCombo fornecedor="Seu Olavo" nome="X-burguer + suco" descricao="X-burguer com suco de maracuja" fator=0.20 produtos="X-burguer - Hamburguer de carne com queijo e calabresa, Suco - Suco de maracuja (copo)"
+expectError "Erro no cadastro de combo: fornecedor nao existe." adicionaCombo fornecedor="Helhao" nome="Tapioca com cafe" descricao="Tapioca de frango com cafe" fator=0.25 produtos="Tapioca de frango - Tapioca de frango e manteiga, Cafe - Cafe pequeno"
+expectError "Erro no cadastro de combo: fornecedor nao pode ser vazio ou nulo." adicionaCombo fornecedor="" nome="Tapioca com cafe" descricao="Tapioca de frango com cafe" fator=0.25 produtos="Tapioca de frango - Tapioca de frango e manteiga, Cafe - Cafe pequeno"
+expectError "Erro no cadastro de combo: nome nao pode ser vazio ou nulo." adicionaCombo fornecedor="Seu Olavo" nome="" descricao="Tapioca de frango com cafe" fator=0.25 produtos="Tapioca de frango - Tapioca de frango e manteiga, Cafe - Cafe pequeno"
+expectError "Erro no cadastro de combo: descricao nao pode ser vazia ou nula." adicionaCombo fornecedor="Seu Olavo" nome="Tapioca com cafe" descricao="" fator=0.25 produtos="Tapioca de frango - Tapioca de frango e manteiga, Cafe - Cafe pequeno"
+expectError "Erro no cadastro de combo: fator invalido." adicionaCombo fornecedor="Seu Olavo" nome="Tapioca com cafe" descricao="Tapioca de frango com cafe" fator=-0.5 produtos="Tapioca de frango - Tapioca de frango e manteiga, Cafe - Cafe pequeno"
+expectError "Erro no cadastro de combo: fator invalido." adicionaCombo fornecedor="Seu Olavo" nome="Tapioca com cafe" descricao="Tapioca de frango com cafe" fator=1 produtos="Tapioca de frango - Tapioca de frango e manteiga, Cafe - Cafe pequeno"
+expectError "Erro no cadastro de combo: combo deve ter produtos." adicionaCombo fornecedor="Seu Olavo" nome="Tapioca com cafe" descricao="Tapioca de frango com cafe" fator=0.7 produtos=""
+expectError "Erro no cadastro de combo: produto nao existe." adicionaCombo fornecedor="Seu Olavo" nome="Tapioca com cafe" descricao="Tapioca de frango com cafe" fator=0.3 produtos="Tapioca de frango - Tapioca de frango e manteiga, Cafe - Cafe pequeno"
+expectError "Erro no cadastro de combo: um combo não pode possuir combos na lista de produtos." adicionaCombo fornecedor="Seu Olavo" nome="Pastel de frango e X-burguer + suco" descricao="Pastel de forno de frango e X-burguer com suco de maracuja" fator=0.3 produtos="Pastel de frango - Pastel de forno de frango, X-burguer + suco - X-burguer com suco de maracuja"
+
+## Exibindo combos ##
+
+expect "X-burguer + suco - X-burguer com suco de maracuja - R$4,80" exibeProduto nome="X-burguer + suco" descricao="X-burguer com suco de maracuja" fornecedor="Seu Olavo"
+expect "X-burguer + refrigerante - X-burguer com refri (lata) - R$6,00" exibeProduto nome="X-burguer + refrigerante" descricao="X-burguer com refri (lata)" fornecedor="Seu Olavo"
+expect "Rubacao com suco - Rubacao completo com suco - R$16,15" exibeProduto nome="Rubacao com suco" descricao="Rubacao completo com suco" fornecedor="Dona Alba"
+expect "Coxao com batata - Coxao de frango com batata frita - R$3,50" exibeProduto nome="Coxao com batata" descricao="Coxao de frango com batata frita" fornecedor="Marcos"
+
+expect "Marcos - Batata frita - Porcao de batata frita - R$4,00\
+ | Marcos - Coxao com batata - Coxao de frango com batata frita - R$3,50\
+ | Marcos - Coxao de Frango - Coxao de frango com cheddar - R$2,50\
+ | Marcos - Coxao de Pizza - Coxao de frango com presunto e queijo - R$2,50\
+ | Marcos - Refrigerante - Refrigerante (lata) - R$2,50" exibeProdutosFornecedor fornecedor="Marcos"
+expect "Dona Alba - Rubacao - Feijao com arroz e queijo coalho - R$17,00\
+ | Dona Alba - Rubacao com suco - Rubacao completo com suco - R$16,15\
+ | Dona Alba - Suco - Suco de goiaba (copo) - R$2,00\
+ | Marcos - Batata frita - Porcao de batata frita - R$4,00\
+ | Marcos - Coxao com batata - Coxao de frango com batata frita - R$3,50\
+ | Marcos - Coxao de Frango - Coxao de frango com cheddar - R$2,50\
+ | Marcos - Coxao de Pizza - Coxao de frango com presunto e queijo - R$2,50\
+ | Marcos - Refrigerante - Refrigerante (lata) - R$2,50\
+ | Seu Olavo - Coca-cola - Coca-cola (lata) - R$3,00\
+ | Seu Olavo - Pastel de frango - Pastel de forno de frango - R$2,00\
+ | Seu Olavo - Suco - Suco de maracuja (copo) - R$1,50\
+ | Seu Olavo - X-burguer - Hamburguer de carne com queijo e calabresa - R$4,50\
+ | Seu Olavo - X-burguer + refrigerante - X-burguer com refri (lata) - R$6,00\
+ | Seu Olavo - X-burguer + suco - X-burguer com suco de maracuja - R$4,80" exibeProdutos
+
+## Editando combos ##
+
+editaCombo nome="Coxao com batata" descricao="Coxao de frango com batata frita" fornecedor="Marcos" novoFator=0.20
+editaCombo nome="Rubacao com suco" descricao="Rubacao completo com suco" fornecedor="Dona Alba" novoFator=0.25
+
+expect "Coxao com batata - Coxao de frango com batata frita - R$4,00" exibeProduto nome="Coxao com batata" descricao="Coxao de frango com batata frita" fornecedor="Marcos"
+expect "Rubacao com suco - Rubacao completo com suco - R$14,25" exibeProduto nome="Rubacao com suco" descricao="Rubacao completo com suco" fornecedor="Dona Alba"
+
+expectError "Erro na edicao de combo: nome nao pode ser vazio ou nulo." editaCombo nome="" descricao="Coxao de frango com batata frita" fornecedor="Marcos" novoFator=0.20
+expectError "Erro na edicao de combo: descricao nao pode ser vazia ou nula." editaCombo nome="Coxao com batata" descricao="" fornecedor="Marcos" novoFator=0.20
+expectError "Erro na edicao de combo: fornecedor nao pode ser vazio ou nulo." editaCombo nome="Coxao com batata" descricao="Coxao de frango com batata frita" fornecedor="" novoFator=0.20
+expectError "Erro na edicao de combo: fornecedor nao existe." editaCombo nome="Coxao com batata" descricao="Coxao de frango com batata frita" fornecedor="Helhao" novoFator=0.20
+expectError "Erro na edicao de combo: fator invalido." editaCombo nome="Coxao com batata" descricao="Coxao de frango com batata frita" fornecedor="Marcos" novoFator=0
+expectError "Erro na edicao de combo: produto nao existe." editaCombo nome="Coxao com batata" descricao="Coxao de frango com batata frita" fornecedor="Seu Olavo" novoFator=0.20
+
+## Removendo combos ##
+
+removeProduto nome="Coca-cola" descricao="Coca-cola (lata)" fornecedor="Seu Olavo"
+
+expect "Seu Olavo - Pastel de frango - Pastel de forno de frango - R$2,00\
+ | Seu Olavo - Suco - Suco de maracuja (copo) - R$1,50\
+ | Seu Olavo - X-burguer - Hamburguer de carne com queijo e calabresa - R$4,50\
+ | Seu Olavo - X-burguer + refrigerante - X-burguer com refri (lata) - R$6,00\
+ | Seu Olavo - X-burguer + suco - X-burguer com suco de maracuja - R$4,80" exibeProdutosFornecedor fornecedor="Seu Olavo"
+ 
+removeProduto nome="X-burguer + refrigerante" descricao="X-burguer com refri (lata)" fornecedor="Seu Olavo"
+
+expect "Seu Olavo - Pastel de frango - Pastel de forno de frango - R$2,00\
+ | Seu Olavo - Suco - Suco de maracuja (copo) - R$1,50\
+ | Seu Olavo - X-burguer - Hamburguer de carne com queijo e calabresa - R$4,50\
+ | Seu Olavo - X-burguer + suco - X-burguer com suco de maracuja - R$4,80" exibeProdutosFornecedor fornecedor="Seu Olavo"
+ 
+removeProduto nome="Batata frita" descricao="Porcao de batata frita" fornecedor="Marcos"
+
+ expect "Marcos - Coxao com batata - Coxao de frango com batata frita - R$4,00\
+ | Marcos - Coxao de Frango - Coxao de frango com cheddar - R$2,50\
+ | Marcos - Coxao de Pizza - Coxao de frango com presunto e queijo - R$2,50\
+ | Marcos - Refrigerante - Refrigerante (lata) - R$2,50"  exibeProdutosFornecedor fornecedor="Marcos"
+ 
+expectError "Erro na remocao de produto: produto nao existe." removeProduto nome="X-burguer + refrigerante" descricao="X-burguer com refri" fornecedor="Seu Olavo"

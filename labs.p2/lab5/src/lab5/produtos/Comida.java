@@ -1,4 +1,4 @@
-package lab5;
+package lab5.produtos;
 
 public abstract class Comida implements Produto, Comparable<Comida>{
 	

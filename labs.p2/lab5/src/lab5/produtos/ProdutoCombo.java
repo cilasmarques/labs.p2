@@ -1,4 +1,4 @@
-package lab5;
+package lab5.produtos;
 
 public class ProdutoCombo extends Comida implements Produto, Promocao {
 

@@ -1,4 +1,10 @@
-package lab5;
+package lab5.pessoas;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import lab5.contas.Conta;
+import lab5.produtos.ProdutoSimples;
 
 /**
  * Classe cliente
@@ -13,12 +19,14 @@ public class Cliente implements Comparable<Cliente> {
 	private String localizacao;
 	private String email;
 	private String nome;
+	private Map<String, Conta> contas;
 
 	public Cliente(String cpf, String nome, String email, String localizacao) {
 		this.nome = nome;
 		this.email = email;
 		this.localizacao = localizacao;
 		this.cpf = cpf;
+		this.contas = new HashMap<>();
 	}
 
 	/**
@@ -83,4 +91,31 @@ public class Cliente implements Comparable<Cliente> {
 		return this.nome.compareTo(o.nome);
 	}
 
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CONTAS / COMPRAS
+	
+	public String adicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd, String descrProd) {
+		String id = cpf + " - " + nomeFornecedor;
+		Conta conta = new Conta();
+		this.contas.put(id, conta);
+		this.contas.get(id).adicionaCompra(data, nomeProd, descrProd);
+		return  id;
+	}
+	
+	public String getDebito(String cpf, String nomeFornecedor) {
+		String id = cpf + " - " + nomeFornecedor;
+		return this.contas.get(id).getDebito();
+	}
+
+	public String exibeContas(String cpf, String nomeFornecedor) {
+		String id = cpf + " - " + nomeFornecedor;
+		if (!this.contas.containsKey(id))
+			throw new Error("Erro na exibicao de contas: conta nao existe.");
+		return this.contas.get(id).toString();
+	}
+
+	public String exibeTodasContas() {
+		return "";
+	}
+	
+	
 }

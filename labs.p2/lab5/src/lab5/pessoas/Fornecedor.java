@@ -1,7 +1,13 @@
-package lab5;
+package lab5.pessoas;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import lab5.produtos.Comida;
+import lab5.produtos.ProdutoCombo;
+import lab5.produtos.ProdutoSimples;
 
 /**
  * Classe Fornecedor
@@ -9,18 +15,18 @@ import java.util.Collections;
  * @author cilas
  *
  */
-public class Fornecedor extends GestorProdutos implements Comparable<Fornecedor> {
+public class Fornecedor implements Comparable<Fornecedor> {
 
 	private String telefone;
 	private String email;
 	private String nome;
-	private GeralController gc;
-	
+	private Map<String, Comida> produtos;
+
 	public Fornecedor(String nome, String email, String telefone) {
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
-		this.gc = new GeralController();
+		this.produtos = new HashMap<>();
 	}
 
 	/**
@@ -45,7 +51,7 @@ public class Fornecedor extends GestorProdutos implements Comparable<Fornecedor>
 	public int compareTo(Fornecedor o) {
 		return this.nome.compareTo(o.nome);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.nome + " - " + this.email + " - " + this.telefone;
@@ -87,8 +93,10 @@ public class Fornecedor extends GestorProdutos implements Comparable<Fornecedor>
 	 */
 	public String cadastraProdutoSimples(String nomeProduto, String descricao, String preco) {
 		ProdutoSimples produto = new ProdutoSimples(nomeProduto, descricao, preco);
-		if (podeAdicionarProdutoSimples(nomeProduto, descricao, preco))
-			this.produtos.put(produto.getId(), produto);
+		String id = nomeProduto + " - " + descricao;
+		if (this.produtos.containsKey(id))
+			throw new Error("Erro no cadastro de produto: produto ja existe.");
+		this.produtos.put(produto.getId(), produto);
 		return nomeProduto + " - " + descricao;
 	}
 
@@ -101,18 +109,20 @@ public class Fornecedor extends GestorProdutos implements Comparable<Fornecedor>
 	 */
 	public void editaProdutoSimples(String nomeProduto, String descricao, String novoPreco) {
 		String id = nomeProduto + " - " + descricao;
-		gc.verificadorParametro(nomeProduto, "Erro na edicao de produto: nome nao pode ser vazio ou nulo.");
-		gc.verificadorParametro(descricao, "Erro na edicao de produto: descricao nao pode ser vazia ou nula.");
-		verificadorPreco(novoPreco, "Erro na edicao de produto: preco invalido.");
-		gc.verificadorNaoExiste(id, "Erro na edicao do produto: produto nao existe.", this.produtos);
+		if (!this.produtos.containsKey(id))
+			throw new Error("Erro na edicao do produto: produto nao existe.");
 		ehProdutoSimples(id).setPreco(novoPreco);
 	}
-	
+
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS COMBOS
-	
+
 	public String cadastraProdutoCombo(String nomeProduto, String descricao, String fator, String produtos) {
 		ProdutoCombo produto = new ProdutoCombo(nomeProduto, descricao, fator, produtos);
-		if (podeAdicionarProdutoCombo(nomeProduto, descricao, fator, produtos)) {
+		String id = nomeProduto + " - " + descricao;
+		if (this.produtos.containsKey(id))
+			throw new Error("Erro no cadastro de combo: combo ja existe.");
+		
+		else if (produtosComboValido(produtos, id)) {
 			produto.setProdutos(getProdutosComPreco(produtos));
 			this.produtos.put(produto.getId(), produto);
 		}
@@ -129,14 +139,12 @@ public class Fornecedor extends GestorProdutos implements Comparable<Fornecedor>
 	 */
 	public void editaProdutoCombo(String nomeProduto, String descricao, String novoFator) {
 		String id = nomeProduto + " - " + descricao;
-		gc.verificadorParametro(nomeProduto, "Erro na edicao de combo: nome nao pode ser vazio ou nulo.");
-		gc.verificadorParametro(descricao, "Erro na edicao de combo: descricao nao pode ser vazia ou nula.");
-		gc.verificadorNaoExiste(id, "Erro na edicao de combo: produto nao existe.", this.produtos);
-		verificadorFator(novoFator, "Erro na edicao de combo: fator invalido.");
+		if (!this.produtos.containsKey(id))
+			throw new Error("Erro na edicao de combo: produto nao existe.");
 		ehProdutoCombo(id).setFator(novoFator);
 	}
-	
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS 	
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS
 
 	/**
 	 * Metodo que exibe um produto determinado
@@ -147,9 +155,8 @@ public class Fornecedor extends GestorProdutos implements Comparable<Fornecedor>
 	 */
 	public String exibeProduto(String nomeProduto, String descricao) {
 		String id = nomeProduto + " - " + descricao;
-		gc.verificadorParametro(nomeProduto, "Erro na exibicao de produto: nome nao pode ser vazio ou nulo.");
-		gc.verificadorParametro(descricao, "Erro na exibicao de produto: descricao nao pode ser vazia ou nula.");
-		gc.verificadorNaoExiste(id, "Erro na exibicao de produto: produto nao existe.", this.produtos);
+		if (!this.produtos.containsKey(id))
+			throw new Error("Erro na exibicao de produto: produto nao existe.");
 		return this.produtos.get(id).toString();
 	}
 
@@ -159,7 +166,10 @@ public class Fornecedor extends GestorProdutos implements Comparable<Fornecedor>
 	 * @return String com todos os produtos cadastrados
 	 */
 	public String exibeTodosProdutos() {
-		return gc.arrayToString(sortArrayProdutosFornecedores());
+		ArrayList<Comida> arrayProdutos = getArrayProdutos();
+		Collections.sort(arrayProdutos);
+		ArrayList<String> arrayStringProdutos = arrayPutInfos(arrayProdutos);
+		return arrayToString(arrayStringProdutos);
 	}
 
 	/**
@@ -170,12 +180,11 @@ public class Fornecedor extends GestorProdutos implements Comparable<Fornecedor>
 	 */
 	public void removeProduto(String nomeProduto, String descricao) {
 		String id = nomeProduto + " - " + descricao;
-		gc.verificadorParametro(nomeProduto, "Erro na remocao de produto: nome nao pode ser vazio ou nulo.");
-		gc.verificadorParametro(descricao, "Erro na remocao de produto: descricao nao pode ser vazia ou nula.");
-		gc.verificadorNaoExiste(id, "Erro na remocao de produto: produto nao existe.", this.produtos);
+		if (!this.produtos.containsKey(id))
+			throw new Error("Erro na remocao de produto: produto nao existe.");
 		this.produtos.remove(id);
 	}
-	
+
 	/**
 	 * Metodo que verifica se os parametros passados para a adicao do produto sao
 	 * validos
@@ -187,43 +196,75 @@ public class Fornecedor extends GestorProdutos implements Comparable<Fornecedor>
 	 * 
 	 * @return String mostrando se que o produto eh valido
 	 */
-	private boolean podeAdicionarProdutoSimples(String nomeProduto, String descricao, String preco) {
-		String id = nomeProduto + " - " + descricao;
-		gc.verificadorParametro(nomeProduto, "Erro no cadastro de produto: nome nao pode ser vazio ou nulo.");
-		gc.verificadorParametro(descricao, "Erro no cadastro de produto: descricao nao pode ser vazia ou nula.");
-		gc.verificadorParametro(preco, "Erro no cadastro de produto: preco nao pode ser vazio ou nulo.");
-		gc.verificadorExiste(id, "Erro no cadastro de produto: produto ja existe.", this.produtos);
-		verificadorPreco(preco, "Erro no cadastro de produto: preco invalido.");
-		return true;
-	}
-	
-	private boolean podeAdicionarProdutoCombo(String nomeProduto, String descricao, String fator, String produtos) {
-		String id = nomeProduto + " - " + descricao;
-		gc.verificadorParametro(nomeProduto, "Erro no cadastro de combo: nome nao pode ser vazio ou nulo.");
-		gc.verificadorParametro(descricao, "Erro no cadastro de combo: descricao nao pode ser vazia ou nula.");
-		gc.verificadorParametro(produtos, "Erro no cadastro de combo: combo deve ter produtos.");
-		gc.verificadorExiste(id, "Erro no cadastro de combo: combo ja existe.", this.produtos);
-		verificadorFator(fator, "Erro no cadastro de combo: fator invalido.");
-		produtosComboValido(produtos, (nomeProduto + " - " + descricao));
-		return true;
-	}
 
 	/**
 	 * Metodo que cria um array com a representação em String dos produtos
 	 * 
 	 * @return array com representacao String dos produtos
 	 */
-	private ArrayList<String> sortArrayProdutosFornecedores() {
-		@SuppressWarnings("unchecked")
-		ArrayList<Comida> arrayProdutos = (ArrayList<Comida>) gc.makeArray(this.produtos);
-		ArrayList<String> arrayStringProdutos = new ArrayList<>();
-		Collections.sort(arrayProdutos);
-		arrayStringProdutos.add(this.nome + " - " + arrayProdutos.get(0).toString());
-		for (int i = 1; i < arrayProdutos.size(); i++) {
-			arrayStringProdutos.add(this.nome + " - " + arrayProdutos.get(i).toString());
+
+	public ArrayList<Comida> getArrayProdutos() {
+		ArrayList<Comida> arrayDeInfos = new ArrayList<>();
+		for (Object key : this.produtos.keySet()) {
+			arrayDeInfos.add(this.produtos.get(key));
 		}
-		return arrayStringProdutos;
+		return arrayDeInfos;
 	}
+
+	private ArrayList<String> arrayPutInfos(ArrayList<?> arrayProdutos) {
+		ArrayList<String> arrayDeInfos = new ArrayList<>();
+		for (int i = 0; i < arrayProdutos.size(); i++) {
+			arrayDeInfos.add(this.nome + " - " + arrayProdutos.get(i).toString());
+		}
+		return arrayDeInfos;
+	}
+
+	/**
+	 * Metodo que coloca as informações de um array em uma unica string
+	 * 
+	 * @param arrayFornecedores array a ser convertido
+	 * @return String com as informações do array
+	 */
+	private String arrayToString(ArrayList<?> arrayFornecedores) {
+		String saida = arrayFornecedores.get(0).toString();
+		for (int i = 1; i < arrayFornecedores.size(); i++) {
+			saida += " | " + arrayFornecedores.get(i);
+		}
+		return saida;
+	}
+
+	private ProdutoSimples ehProdutoSimples(String id) {
+		if (this.produtos.containsKey(id) && this.produtos.get(id).getClass().equals(ProdutoSimples.class))
+			return (ProdutoSimples) this.produtos.get(id);
+		throw new Error("Produto nao eh simples");
+	}
+
+	private ProdutoCombo ehProdutoCombo(String id) {
+		if (this.produtos.containsKey(id) && this.produtos.get(id).getClass().equals(ProdutoCombo.class))
+			return (ProdutoCombo) this.produtos.get(id);
+		throw new Error("Produto nao eh combo");
+	}
+
+	private String getProdutosComPreco(String produtos) {
+		String produtosComPreco = "";
+		for (String produto : (produtos.split(", "))) {
+			produtosComPreco += this.produtos.get(produto).toString();
+		}
+		return produtosComPreco;
+	}
+
+	private boolean produtosComboValido(String produtos, String id) {
+		for (String idProduto : (produtos.split(", "))) {
+			if (!this.produtos.containsKey(idProduto))
+				throw new Error("Erro no cadastro de combo: produto nao existe.");
+			else if (this.produtos.containsKey(idProduto) && this.produtos.get(idProduto).getClass().equals(ProdutoCombo.class))
+				throw new Error("Erro no cadastro de combo: um combo n�o pode possuir combos na lista de produtos.");
+		}
+		return true;
+	}
+
+	public Map<String, Comida> getProdutos() {
+		return this.produtos;
+	}
+
 }
-
-

@@ -1,6 +1,7 @@
 package lab5;
 
 import easyaccept.EasyAccept;
+import lab5.controllers.GeralController;
 
 /**
  * Facade principal
@@ -10,16 +11,14 @@ import easyaccept.EasyAccept;
  */
 public class FacadeSAGA {
 
-	private ClienteController clienteController;
-	private FornecedorController fornecedorController;
+	private GeralController gc;
 
 	/**
 	 * Construtor de FacadeSAGA, inicializa o ClienteController e o
 	 * FornecedorController
 	 */
 	public FacadeSAGA() {
-		this.clienteController = new ClienteController();
-		this.fornecedorController = new FornecedorController();
+		this.gc = new GeralController();
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CLIENTES
@@ -33,7 +32,7 @@ public class FacadeSAGA {
 	 * @return String mostrandp o cpf do cliente adicionado
 	 */
 	public String adicionaCliente(String cpf, String nome, String email, String localizacao) {
-		return this.clienteController.adicionaCliente(cpf, nome, email, localizacao);
+		return this.gc.adicionaCliente(cpf, nome, email, localizacao);
 	}
 
 	/**
@@ -44,7 +43,7 @@ public class FacadeSAGA {
 	 * @param novoValor novo valor do atributo editado
 	 */
 	public void editaCliente(String cpf, String atributo, String novoValor) {
-		this.clienteController.editaCliente(cpf, atributo, novoValor);
+		this.gc.editaCliente(cpf, atributo, novoValor);
 	}
 
 	/**
@@ -54,7 +53,7 @@ public class FacadeSAGA {
 	 * @return String que representa o cliente
 	 */
 	public String exibeCliente(String cpf) {
-		return this.clienteController.exibeCliente(cpf);
+		return this.gc.exibeCliente(cpf);
 	}
 
 	/**
@@ -63,7 +62,7 @@ public class FacadeSAGA {
 	 * @return String com todos os clientes cadastrados
 	 */
 	public String exibeClientes() {
-		return this.clienteController.exibeTodos();
+		return this.gc.exibeTodosClientes();
 	}
 
 	/**
@@ -72,7 +71,7 @@ public class FacadeSAGA {
 	 * @param cpf cpf do cliente
 	 */
 	public void removeCliente(String cpf) {
-		this.clienteController.removeCliente(cpf);
+		this.gc.removeCliente(cpf);
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ FORNECEDORES
@@ -86,7 +85,7 @@ public class FacadeSAGA {
 	 * @return String mostrandp o nome do fornecedor adicionado
 	 */
 	public String adicionaFornecedor(String nome, String email, String telefone) {
-		return this.fornecedorController.adicionaFornecedor(nome, email, telefone);
+		return this.gc.adicionaFornecedor(nome, email, telefone);
 	}
 
 	/**
@@ -97,7 +96,7 @@ public class FacadeSAGA {
 	 * @param novoValor novo valor do atributo editado
 	 */
 	public void editaFornecedor(String nome, String atributo, String novoValor) {
-		this.fornecedorController.editaFornecedor(nome, atributo, novoValor);
+		this.gc.editaFornecedor(nome, atributo, novoValor);
 	}
 
 	/**
@@ -107,7 +106,7 @@ public class FacadeSAGA {
 	 * @return String com uma representacao do fornecedor
 	 */
 	public String exibeFornecedor(String nome) {
-		return this.fornecedorController.exibeFornecedor(nome);
+		return this.gc.exibeFornecedor(nome);
 	}
 
 	/**
@@ -116,7 +115,7 @@ public class FacadeSAGA {
 	 * @return String com todos os fornecedores cadastrados
 	 */
 	public String exibeFornecedores() {
-		return this.fornecedorController.exibeTodos();
+		return this.gc.exibeTodosFornecedores();
 	}
 
 	/**
@@ -125,10 +124,10 @@ public class FacadeSAGA {
 	 * @param nome nome do fornecedor
 	 */
 	public void removeFornecedor(String nome) {
-		this.fornecedorController.removeFornecedor(nome);
+		this.gc.removeFornecedor(nome);
 	}
 
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS SIMPLES
 
 	/**
 	 * Metodo que adiciona um produto simples a um fornecedor
@@ -140,7 +139,7 @@ public class FacadeSAGA {
 	 * @return String mostrandp o id (nome e descricao) do produto adicionado
 	 */
 	public String adicionaProduto(String nomeFornecedor, String nome, String descricao, String preco) {
-		return this.fornecedorController.cadastraProdutoSimples(nomeFornecedor, nome, descricao, preco);
+		return this.gc.adicionaProdutoSimples(nomeFornecedor, nome, descricao, preco);
 	}
 
 	/**
@@ -151,10 +150,10 @@ public class FacadeSAGA {
 	 * @param novoPreco      novo preco do produto
 	 * @param nomeFornecedor nome do fornecedor do produto
 	 */
-	public void editaProduto(String nome, String descricao, String novoPreco, String nomeFornecedor) {
-		this.fornecedorController.editaProdutoSimples(nome, descricao, novoPreco, nomeFornecedor);
+	public void editaProduto(String nome, String descricao, String nomeFornecedor, String novoPreco) {
+		this.gc.editaProdutoSimples(nome, descricao, nomeFornecedor, novoPreco);
 	}
-	
+
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS COMBOS
 	
 	/**
@@ -167,7 +166,7 @@ public class FacadeSAGA {
 	 * @return String mostrandp o id (nome e descricao) do produto adicionado
 	 */
 	public String adicionaCombo(String nomeFornecedor, String nome, String descricao, String fator, String produtos) {
-		return this.fornecedorController.adicionaCombo(nomeFornecedor, nome, descricao, fator, produtos);
+		return this.gc.adicionaCombo(nomeFornecedor, nome, descricao, fator, produtos);
 	}
 
 	/**
@@ -179,11 +178,11 @@ public class FacadeSAGA {
 	 * @param nomeFornecedor nome do fornecedor do produto
 	 */
 	public void editaCombo(String nome, String descricao, String nomeFornecedor, String novoFator) {
-		this.fornecedorController.editaCombo(nome, descricao, nomeFornecedor, novoFator);
+		this.gc.editaCombo(nome, descricao, nomeFornecedor, novoFator);
 	}
-
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS 
 	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS
+
 	/**
 	 * Metodo que exibe um produto determinado
 	 * 
@@ -193,7 +192,7 @@ public class FacadeSAGA {
 	 * @return String com uma representacao do produto
 	 */
 	public String exibeProduto(String nome, String descricao, String nomeFornecedor) {
-		return this.fornecedorController.exibeProduto(nome, descricao, nomeFornecedor);
+		return this.gc.exibeProduto(nome, descricao, nomeFornecedor);
 	}
 
 	/**
@@ -203,7 +202,7 @@ public class FacadeSAGA {
 	 * @return String com todos os produtos de um fornecedor
 	 */
 	public String exibeProdutosFornecedor(String nomeFornecedor) {
-		return this.fornecedorController.exibeProdutos(nomeFornecedor);
+		return this.gc.exibeProdutosFornecedor(nomeFornecedor);
 	}
 
 	/**
@@ -212,7 +211,7 @@ public class FacadeSAGA {
 	 * @return String com todos os produtos cadastrados
 	 */
 	public String exibeProdutos() {
-		return this.fornecedorController.exibeTodosProdutos();
+		return this.gc.exibeTodosProdutos();
 	}
 
 	/**
@@ -223,13 +222,31 @@ public class FacadeSAGA {
 	 * @param nomeFornecedor nome do fornecedor do produto
 	 */
 	public void removeProduto(String nome, String descricao, String nomeFornecedor) {
-		this.fornecedorController.removeProduto(nome, descricao, nomeFornecedor);
+		this.gc.removeProduto(nome, descricao, nomeFornecedor);
+	}
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CONTAS / COMPRAS
+	
+	public String adicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd, String descrProd) {
+		return this.gc.adicionaCompra(cpf, nomeFornecedor, data, nomeProd, descrProd);
+	}
+	
+	public String getDebito(String cpf, String nomeFornecedor) {
+		return this.gc.getDebito(cpf , nomeFornecedor);
+	}
+
+	public String exibeContas(String cpf, String nomeFornecedor) {
+		return this.gc.exibeContas(cpf, nomeFornecedor);
+	}
+
+	public String exibeContasCliente(String cpf) {
+		return this.gc.exibeContasCliente(cpf);
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ EASYACCEPT
 	public static void main(String[] args) {
 		args = new String[] { "lab5.FacadeSAGA", "acc_tst/use_case_1.txt", "acc_tst/use_case_2.txt",
-				"acc_tst/use_case_3.txt", "acc_tst/use_case_4.txt" };
+				"acc_tst/use_case_3.txt", "acc_tst/use_case_4.txt", "acc_tst/use_case_5.txt" };
 		EasyAccept.main(args);
 	}
 }

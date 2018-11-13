@@ -95,6 +95,15 @@ public class Cliente implements Comparable<Cliente> {
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CONTAS / COMPRAS
 
+	/**
+	 * Metodo que adiciona uma compra de um cliente
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @param data           data da compra
+	 * @param produto        produto a ser adicionado
+	 * @return String com o id da conta do cliente
+	 */
 	public String adicionaCompra(String cpf, String nomeFornecedor, String data, Comida produto) {
 		String id = cpf + " - " + nomeFornecedor;
 		Conta conta = new Conta();
@@ -107,28 +116,67 @@ public class Cliente implements Comparable<Cliente> {
 		return id;
 	}
 
+	/**
+	 * Metodo que pega o debito da conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @return String com o preco da divida
+	 */
 	public String getDebito(String cpf, String nomeFornecedor) {
 		String id = cpf + " - " + nomeFornecedor;
-		if (!this.contas.containsKey(id))
+		if (!this.contas.containsKey(id) || this.contas.get(id).getDebito().equals("0.00"))
 			throw new Error("Erro ao recuperar debito: cliente nao tem debito com fornecedor.");
 		return this.contas.get(id).getDebito();
 	}
 
+	/**
+	 * Metodo que exibe uma determinada conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @return Strinf com a conta especificada
+	 */
 	public String exibeContas(String cpf, String nomeFornecedor) {
 		String id = cpf + " - " + nomeFornecedor;
-		if (!this.contas.containsKey(id))
+		if (!this.contas.containsKey(id) || this.contas.get(id).getProdutos().size() == 0)
 			throw new Error("Erro ao exibir conta do cliente: cliente nao tem nenhuma conta com o fornecedor.");
 		return "Cliente: " + this.nome + " | " + nomeFornecedor + this.contas.get(id).toString();
 	}
 
+	/**
+	 * Metodo que exibe todas as contas de um cliente
+	 * 
+	 * @param cpf cpf do cliente
+	 * @return String com todas as contas do cliente
+	 */
 	public String exibeTodasContas(String cpf) {
 		String saida = "";
-		for (String id: getContasCPF(cpf)) {
+		for (String id : getContasCPF(cpf)) {
 			saida += " | " + id.substring(14) + this.contas.get(id).toString();
 		}
 		return "Cliente: " + this.nome + saida;
 	}
-	
+
+	/**
+	 * Metodo que realiza o pagamento de determinada conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 */
+	public void realizaPagamento(String cpf, String nomeFornecedor) {
+		String id = cpf + " - " + nomeFornecedor;
+		if (!this.contas.containsKey(id) || this.contas.get(id).getDebito().equals("0.00"))
+			throw new Error("Erro no pagamento de conta: nao ha debito do cliente associado a este fornecedor.");
+		this.contas.get(id).realizaPagamento();
+	}
+
+	/**
+	 * Metodo que pega as contas que contem o cpf especificado
+	 * 
+	 * @param cpf cpf do cliente
+	 * @return Sorted Array de contas que contem o cpf
+	 */
 	private ArrayList<String> getContasCPF(String cpf) {
 		ArrayList<String> contasCPF = new ArrayList<>();
 		for (String id : this.contas.keySet()) {
@@ -136,9 +184,9 @@ public class Cliente implements Comparable<Cliente> {
 				contasCPF.add(id);
 		}
 		Collections.sort(contasCPF);
-		if(contasCPF.size() == 0) 
+		if (contasCPF.size() == 0)
 			throw new Error("Erro ao exibir contas do cliente: cliente nao tem nenhuma conta.");
 		return contasCPF;
 	}
-	
+
 }

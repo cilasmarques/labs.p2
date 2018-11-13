@@ -116,12 +116,21 @@ public class Fornecedor implements Comparable<Fornecedor> {
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS COMBOS
 
+	/**
+	 * Metodo que adiciona um produto COMBO a um fornecedor
+	 * 
+	 * @param nomeFornecedor nome do fornecedor do produto
+	 * @param nomeProduto    nome do produto
+	 * @param descricao      descricao do produto
+	 * @param fator          fator do produto
+	 * @return String mostrandp o id (nome e descricao) do produto adicionado
+	 */
 	public String cadastraProdutoCombo(String nomeProduto, String descricao, String fator, String produtos) {
 		ProdutoCombo produto = new ProdutoCombo(nomeProduto, descricao, fator, produtos);
 		String id = nomeProduto + " - " + descricao;
 		if (this.produtos.containsKey(id))
 			throw new Error("Erro no cadastro de combo: combo ja existe.");
-		
+
 		else if (produtosComboValido(produtos, id)) {
 			produto.setProdutos(getProdutosComPreco(produtos));
 			this.produtos.put(produto.getId(), produto);
@@ -130,11 +139,11 @@ public class Fornecedor implements Comparable<Fornecedor> {
 	}
 
 	/**
-	 * Metodo que edita um produto combo
+	 * Metodo que edita um produto COMBO
 	 * 
-	 * @param nome           novo nome do produto
+	 * @param nomeProduto    novo nome do produto
 	 * @param descricao      nova descricao do produto
-	 * @param novoPreco      novo preco do produto
+	 * @param novoFator      novo fator do produto
 	 * @param nomeFornecedor nome do fornecedor do produto
 	 */
 	public void editaProdutoCombo(String nomeProduto, String descricao, String novoFator) {
@@ -186,23 +195,10 @@ public class Fornecedor implements Comparable<Fornecedor> {
 	}
 
 	/**
-	 * Metodo que verifica se os parametros passados para a adicao do produto sao
-	 * validos
+	 * Metodo que tranforma um mapa de produtos em um array
 	 * 
-	 * @param nomeProduto nome do produto
-	 * @param descricao   email do produto
-	 * @param preco       telefone do produto
-	 * @param campo       campo onde esta sendo chamada o metodo
-	 * 
-	 * @return String mostrando se que o produto eh valido
+	 * @return ArrayList de produtos
 	 */
-
-	/**
-	 * Metodo que cria um array com a representação em String dos produtos
-	 * 
-	 * @return array com representacao String dos produtos
-	 */
-
 	public ArrayList<Comida> getArrayProdutos() {
 		ArrayList<Comida> arrayDeInfos = new ArrayList<>();
 		for (Object key : this.produtos.keySet()) {
@@ -211,6 +207,12 @@ public class Fornecedor implements Comparable<Fornecedor> {
 		return arrayDeInfos;
 	}
 
+	/**
+	 * Metodo que cooca informacoes no array de produtos
+	 * 
+	 * @param arrayFornecedores array de produtos
+	 * @return Um array de fornecedores com as informacoes dos produtos
+	 */
 	private ArrayList<String> arrayPutInfos(ArrayList<?> arrayProdutos) {
 		ArrayList<String> arrayDeInfos = new ArrayList<>();
 		for (int i = 0; i < arrayProdutos.size(); i++) {
@@ -222,29 +224,49 @@ public class Fornecedor implements Comparable<Fornecedor> {
 	/**
 	 * Metodo que coloca as informações de um array em uma unica string
 	 * 
-	 * @param arrayFornecedores array a ser convertido
+	 * @param arrayProdutos array a ser convertido
 	 * @return String com as informações do array
 	 */
-	private String arrayToString(ArrayList<?> arrayFornecedores) {
-		String saida = arrayFornecedores.get(0).toString();
-		for (int i = 1; i < arrayFornecedores.size(); i++) {
-			saida += " | " + arrayFornecedores.get(i);
+	private String arrayToString(ArrayList<?> arrayProdutos) {
+		String saida = arrayProdutos.get(0).toString();
+		for (int i = 1; i < arrayProdutos.size(); i++) {
+			saida += " | " + arrayProdutos.get(i);
 		}
 		return saida;
 	}
 
+	/**
+	 * Metodo que verifica se um produto eh simples
+	 * 
+	 * @param id id do produto
+	 * @return Retorna um produto simples, caso seja
+	 * @throws Lanca um Erro caso nao seja
+	 */
 	private ProdutoSimples ehProdutoSimples(String id) {
 		if (this.produtos.containsKey(id) && this.produtos.get(id).getClass().equals(ProdutoSimples.class))
 			return (ProdutoSimples) this.produtos.get(id);
 		throw new Error("Produto nao eh simples");
 	}
 
+	/**
+	 * Metodo que verifica se um produto eh combo
+	 * 
+	 * @param id id do produto
+	 * @return Retorna um produto combo, caso seja
+	 * @throws Lanca um Erro caso nao seja
+	 */
 	private ProdutoCombo ehProdutoCombo(String id) {
 		if (this.produtos.containsKey(id) && this.produtos.get(id).getClass().equals(ProdutoCombo.class))
 			return (ProdutoCombo) this.produtos.get(id);
 		throw new Error("Produto nao eh combo");
 	}
 
+	/**
+	 * Metodo que prega os produtos com os precos
+	 * 
+	 * @param produtos produtos que compoem o combo
+	 * @return String com os produtos com os precos
+	 */
 	private String getProdutosComPreco(String produtos) {
 		String produtosComPreco = "";
 		for (String produto : (produtos.split(", "))) {
@@ -253,16 +275,30 @@ public class Fornecedor implements Comparable<Fornecedor> {
 		return produtosComPreco;
 	}
 
+	/**
+	 * Metodo qe verifica se um produto combo eh valido
+	 * 
+	 * @param produtos produtos que compoem o combo
+	 * @param id       id do combo
+	 * @return retorna true, caso deja valido
+	 * @throws caso nao seja, lanca um erro
+	 */
 	private boolean produtosComboValido(String produtos, String id) {
 		for (String idProduto : (produtos.split(", "))) {
 			if (!this.produtos.containsKey(idProduto))
 				throw new Error("Erro no cadastro de combo: produto nao existe.");
-			else if (this.produtos.containsKey(idProduto) && this.produtos.get(idProduto).getClass().equals(ProdutoCombo.class))
+			else if (this.produtos.containsKey(idProduto)
+					&& this.produtos.get(idProduto).getClass().equals(ProdutoCombo.class))
 				throw new Error("Erro no cadastro de combo: um combo nao pode possuir combos na lista de produtos.");
 		}
 		return true;
 	}
 
+	/**
+	 * Metodo que permite pegar o mapa de produtos
+	 * 
+	 * @return Mapa de produtos
+	 */
 	public Map<String, Comida> getProdutos() {
 		return this.produtos;
 	}

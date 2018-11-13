@@ -23,6 +23,7 @@ expectError "Erro ao cadastrar compra: produto nao existe." adicionaCompra cpf=6
 
 ## Totalizando conta de um fornecedor ##
 
+expect 5.00 getDebito cpf=64269141198 fornecedor="Marcos"
 expect 1.50 getDebito cpf=64269141198 fornecedor="Seu Olavo"
 expect 17.00 getDebito cpf=58217738123 fornecedor="Dona Alba"
 expect 5.00 getDebito cpf=58217738123 fornecedor="Marcos"

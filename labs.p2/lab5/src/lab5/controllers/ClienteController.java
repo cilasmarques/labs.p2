@@ -1,6 +1,5 @@
 package lab5.controllers;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,7 +21,12 @@ public class ClienteController {
 	public ClienteController() {
 		this.clientes = new HashMap<>();
 	}
-	
+
+	/**
+	 * Metodo que permite pegar o mapa de clientes
+	 * 
+	 * @return Retorna o mapa de clientes
+	 */
 	public Map<String, Cliente> getClientes() {
 		return this.clientes;
 	}
@@ -101,53 +105,83 @@ public class ClienteController {
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CONTAS / COMPRAS
-	
+
+	/**
+	 * Metodo que adiciona uma compra de um cliente
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @param data           data da compra
+	 * @param produto        produto a ser adicionado
+	 * @return String com o id da conta do cliente
+	 */
 	public String adicionaCompra(String cpf, String nomeFornecedor, String data, Comida produto) {
 		return clienteValido(cpf, "ao cadastrar compra").adicionaCompra(cpf, nomeFornecedor, data, produto);
 	}
-	
+
+	/**
+	 * Metodo que pega o debito da conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @return String com o preco da divida
+	 */
 	public String getDebito(String cpf, String nomeFornecedor) {
-		return clienteValido(cpf, "ao recuperar debito").getDebito(cpf , nomeFornecedor);
+		return clienteValido(cpf, "ao recuperar debito").getDebito(cpf, nomeFornecedor);
 	}
 
+	/**
+	 * Metodo que exibe uma determinada conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @return Strinf com a conta especificada
+	 */
 	public String exibeContas(String cpf, String nomeFornecedor) {
 		return clienteValido(cpf, "ao exibir conta do cliente").exibeContas(cpf, nomeFornecedor);
 	}
 
+	/**
+	 * Metodo que exibe todas as contas de um cliente
+	 * 
+	 * @param cpf cpf do cliente
+	 * @return String com todas as contas do cliente
+	 */
 	public String exibeContasCliente(String cpf) {
 		return clienteValido(cpf, "ao exibir contas do cliente").exibeTodasContas(cpf);
 	}
-	
+
 	/**
-	 * Metodo que pega um fornecedor valido
+	 * Metodo que realiza o pagamento de determinada conta
 	 * 
-	 * @param cpf nome do fornecedor
-	 * @param campo          campo onde esta sendo chamada o metodo
-	 * @return
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 */
+	public void realizaPagamento(String cpf, String nomeFornecedor) {
+		clienteValido(cpf, "no pagamento de conta").realizaPagamento(cpf, nomeFornecedor);
+	}
+
+	/**
+	 * Metodo que pega um cliente valido
+	 * 
+	 * @param cpf   cpf do cliente
+	 * @param campo campo onde esta sendo chamada o metodo
+	 * @return cliente valido
 	 */
 	private Cliente clienteValido(String cpf, String campo) {
 		if (cpf == null || cpf.trim().equals(""))
 			throw new Error("Erro " + campo + ": cliente nao pode ser vazio ou nulo.");
 		else if (!this.clientes.containsKey(cpf))
 			throw new Error("Erro " + campo + ": cliente nao existe.");
-		Cliente cliente= clientes.get(cpf);
+		Cliente cliente = clientes.get(cpf);
 		return cliente;
 	}
-	
-	
+
 	/**
-	 * Metodo que verifica se os parametros passados para a manipulacao do cliente
-	 * sao validos
+	 * Metodo que transforma o mapa de clientes em um array
 	 * 
-	 * @param nome        nome do cliente
-	 * @param email       email do cliente
-	 * @param localizacao localizacao do cliente
-	 * @param cpf         cpf do cliente
-	 * 
-	 * @return String mostrando se o cliente eh valido
+	 * @return Array de clientes
 	 */
-	
-	
 	private ArrayList<Cliente> getArrayClientes() {
 		ArrayList<Cliente> arrayDeInfos = new ArrayList<>();
 		for (Object key : this.clientes.keySet()) {
@@ -155,7 +189,7 @@ public class ClienteController {
 		}
 		return arrayDeInfos;
 	}
-	
+
 	/**
 	 * Metodo que coloca as informações de um array em uma unica string
 	 * 
@@ -170,7 +204,7 @@ public class ClienteController {
 
 		String saida = arrayClientes.get(0).toString();
 		for (int i = 1; i < arrayClientes.size(); i++) {
-			saida += " | "+ arrayClientes.get(i);
+			saida += " | " + arrayClientes.get(i);
 		}
 		return saida;
 	}

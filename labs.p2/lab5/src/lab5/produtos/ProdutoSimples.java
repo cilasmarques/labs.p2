@@ -6,29 +6,33 @@ package lab5.produtos;
  * @author cilas
  *
  */
-public class ProdutoSimples extends Comida implements Produto {
+public class ProdutoSimples extends Comida {
 
 	private String preco;
 
 	public ProdutoSimples(String nomeProduto, String descricao, String preco) {
-		super(nomeProduto,descricao);
+		super(nomeProduto, descricao);
 		this.preco = preco;
 	}
 
 	/**
 	 * Metodo que permite mudar o preco
 	 * 
-	 * @param preco do produto
+	 * @param preco novo preco do produto
 	 */
 	public void setPreco(String preco) {
 		this.preco = preco;
 	}
 
-	@Override
+	/**
+	 * Metodo que permite pegar o preco do produto simples
+	 * 
+	 * @return retorna o preco do produto simples
+	 */
 	public double getPreco() {
 		return Double.parseDouble(this.preco);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.nome + " - " + this.descricao + " - R$" + this.preco.replace(".", ",");
@@ -64,5 +68,5 @@ public class ProdutoSimples extends Comida implements Produto {
 			return false;
 		return true;
 	}
-	
+
 }

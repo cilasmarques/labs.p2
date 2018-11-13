@@ -168,6 +168,7 @@ public class GeralController {
 	 * @param nomeProduto    nome do produto
 	 * @param descricao      descricao do produto
 	 * @param fator          fator do produto
+	 * @param produtos		 produtos que compoem o combo
 	 * @return String mostrandp o id (nome e descricao) do produto adicionado
 	 */
 	public String adicionaCombo(String nomeFornecedor, String nomeProduto, String descricao, String fator,
@@ -226,7 +227,7 @@ public class GeralController {
 	/**
 	 * Metodo que remove um produto de um fornecedor a partir do nome e descricao
 	 * 
-	 * @param nomeProduto    nome do produto
+	 * @param nome           nome do produto
 	 * @param descricao      descricao do produto
 	 * @param nomeFornecedor nome do fornecedor do produto
 	 */
@@ -237,42 +238,93 @@ public class GeralController {
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CONTAS / COMPRAS
 
+	/**
+	 * Metodo que adiciona uma compra de um cliente
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @param data           data da compra
+	 * @param nomeProd       nome do produto comprado
+	 * @param descrProd      descricao do produto comprado
+	 * @return String com o id da conta do cliente
+	 */
 	public String adicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd, String descrProd) {
 		verificadorAdicionaCompra(cpf, nomeFornecedor, data, nomeProd, descrProd);
 		String produto = nomeProd + " - " + descrProd;
 		return this.cc.adicionaCompra(cpf, nomeFornecedor, data, this.fc.getProdutos(nomeFornecedor).get(produto));
 	}
 
+	/**
+	 * Metodo que pega o debito da conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @return String com o preco da divida
+	 */
 	public String getDebito(String cpf, String nomeFornecedor) {
-		u.verificaGetDebito(cpf,nomeFornecedor,this.fc.getFornecedores());
+		u.verificaGetDebito(cpf, nomeFornecedor, this.fc.getFornecedores());
 		return this.cc.getDebito(cpf, nomeFornecedor);
 	}
 
+	/**
+	 * Metodo que exibe uma determinada conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @return Strinf com a conta especificada
+	 */
 	public String exibeContas(String cpf, String nomeFornecedor) {
 		u.verificadorExibeContas(cpf, nomeFornecedor, this.fc.getFornecedores());
 		return this.cc.exibeContas(cpf, nomeFornecedor);
 	}
 
+	/**
+	 * Metodo que exibe todas as contas de um cliente
+	 * 
+	 * @param cpf cpf do cliente
+	 * @return String com todas as contas do cliente
+	 */
 	public String exibeContasCliente(String cpf) {
 		u.verifcadorCPF(cpf, "Erro ao exibir contas do cliente: cpf invalido.");
 		return this.cc.exibeContasCliente(cpf);
 	}
 
-	private void verificadorAdicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd,
-			String descrProd) {
+	/**
+	 * Metodo que realiza o pagamento de determinada conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 */
+	public void realizaPagamento(String cpf, String nomeFornecedor) {
+		u.verificadorRealizaPagamento(cpf, nomeFornecedor, this.fc.getFornecedores());
+		this.cc.realizaPagamento(cpf, nomeFornecedor);
+	}
+
+	/**
+	 * Metodo que verifica se pode adicionar uma compra
+	 *
+	 * OBS: Esse metodo estava na classe verificador, mas estava bugando o código,
+	 * nao identifiquei o motivo, mas nao tive tempo de ajeitar.
+	 * 
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @param data           data da compra
+	 * @param nomeProd       nome do produto
+	 * @param descrProd      descricao do produto
+	 */
+	private void verificadorAdicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd, String descrProd) {
 		String id = nomeProd + " - " + descrProd;
-		if (cpf.length() != 11)
-			throw new Error("Erro ao cadastrar compra: cpf invalido.");
+		u.verifcadorCPF(cpf, "Erro ao cadastrar compra: cpf invalido.");
 		u.verificadorParametro(data, "Erro ao cadastrar compra: data nao pode ser vazia ou nula.");
 		u.verificadorParametro(nomeProd, "Erro ao cadastrar compra: nome do produto nao pode ser vazio ou nulo.");
 		u.verificadorParametro(descrProd, "Erro ao cadastrar compra: descricao do produto nao pode ser vazia ou nula.");
 		u.verificadorParametro(nomeFornecedor, "Erro ao cadastrar compra: fornecedor nao pode ser vazio ou nulo.");
 		u.verificadorNaoExiste(nomeFornecedor, "Erro ao cadastrar compra: fornecedor nao existe.", this.fc.getFornecedores());
 		u.verificadorNaoExiste(cpf, "Erro ao cadastrar compra: cliente nao existe.", this.cc.getClientes());
+		u.verificadorNaoExiste(id, "Erro ao cadastrar compra: produto nao existe.",this.fc.getProdutos(nomeFornecedor));
 		if (data.length() != 10)
 			throw new Error("Erro ao cadastrar compra: data invalida.");
-		u.verificadorNaoExiste(id, "Erro ao cadastrar compra: produto nao existe.", this.fc.getProdutos(nomeFornecedor));
-		//u.verificadorAdicionaCompra(cpf, nomeFornecedor, data, nomeProd, descrProd, this.fc.getFornecedores(), this.fc.getProdutos(nomeFornecedor), this.cc.getClientes());
 	}
-	
+
 }

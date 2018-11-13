@@ -1,6 +1,6 @@
 package lab5.produtos;
 
-public class ProdutoCombo extends Comida implements Produto, Promocao {
+public class ProdutoCombo extends Comida implements Promocao {
 
 	private String fator;
 	private String produtos;
@@ -11,15 +11,29 @@ public class ProdutoCombo extends Comida implements Produto, Promocao {
 		this.produtos = produtos;
 	}
 
+	/**
+	 * Metodo que permite mudar os produtos
+	 * 
+	 * @param novos produtos
+	 */
 	public void setProdutos(String produtos2) {
 		this.produtos = produtos2;
 	}
 
+	/**
+	 * Metodo que permite mudar o fator
+	 * 
+	 * @param novoFator novo fator do produto
+	 */
 	public void setFator(String novoFator) {
 		this.fator = novoFator;
 	}
 
-	@Override
+	/**
+	 * Metodo que permite pegar o preco do produto combo
+	 * 
+	 * @return retorna o preco do produto combo
+	 */
 	public double getPreco() {
 		return getPrecoGeral(this.produtos);
 	}
@@ -72,6 +86,12 @@ public class ProdutoCombo extends Comida implements Produto, Promocao {
 		return true;
 	}
 
+	/**
+	 * Metodo que prega o preco geral de todos os produtos
+	 * 
+	 * @param produtos produtos que compoem o combo
+	 * @return retorna o preco geral
+	 */
 	private double getPrecoGeral(String produtos) {
 		double preco = 0.0;
 		for (String palavra : produtos.split(" ")) {

@@ -19,17 +19,12 @@ public abstract class Comida implements Produto, Comparable<Comida>{
 		return this.nome + " - " + this.descricao;
 	}
 
+	/**
+	 * Metodo que permite pegar o nome da comida
+	 * @return Retorna o nome do produto
+	 */
 	public String getNome() {
 		return this.nome;
-	}
-	
-	/**
-	 * Metodo que permite mudar a descricao
-	 * 
-	 * @param descricao do produto
-	 */
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 	
 	@Override

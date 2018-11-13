@@ -82,7 +82,7 @@ public class FacadeSAGA {
 	 * @param nome     nome do fornecedor
 	 * @param email    email do fornecedor
 	 * @param telefone telefone do fornecedor
-	 * @return String mostrandp o nome do fornecedor adicionado
+	 * @return String mostrando o nome do fornecedor adicionado
 	 */
 	public String adicionaFornecedor(String nome, String email, String telefone) {
 		return this.gc.adicionaFornecedor(nome, email, telefone);
@@ -103,6 +103,7 @@ public class FacadeSAGA {
 	 * Metodo que exibe um fornecedor determinado
 	 * 
 	 * @param nome nome do fornecedor
+	 * 
 	 * @return String com uma representacao do fornecedor
 	 */
 	public String exibeFornecedor(String nome) {
@@ -147,23 +148,24 @@ public class FacadeSAGA {
 	 * 
 	 * @param nome           novo nome do produto
 	 * @param descricao      nova descricao do produto
-	 * @param novoPreco      novo preco do produto
 	 * @param nomeFornecedor nome do fornecedor do produto
+	 * @param novoPreco      novo preco do produto
 	 */
 	public void editaProduto(String nome, String descricao, String nomeFornecedor, String novoPreco) {
 		this.gc.editaProdutoSimples(nome, descricao, nomeFornecedor, novoPreco);
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS COMBOS
-	
+
 	/**
-	 * Metodo que adiciona um produto COMBO a um fornecedor 
+	 * Metodo que adiciona um produto COMBO a um fornecedor
 	 * 
 	 * @param nomeFornecedor nome do fornecedor do produto
 	 * @param nome           nome do produto
 	 * @param descricao      descricao do produto
 	 * @param fator          fator do produto
-	 * @return String mostrandp o id (nome e descricao) do produto adicionado
+	 * @param produtos       produtos que comboem o combo
+	 * @return String mostrando o id (nome e descricao) do produto adicionado
 	 */
 	public String adicionaCombo(String nomeFornecedor, String nome, String descricao, String fator, String produtos) {
 		return this.gc.adicionaCombo(nomeFornecedor, nome, descricao, fator, produtos);
@@ -174,13 +176,13 @@ public class FacadeSAGA {
 	 * 
 	 * @param nome           novo nome do produto
 	 * @param descricao      nova descricao do produto
-	 * @param novoFator      novo fator do produto
 	 * @param nomeFornecedor nome do fornecedor do produto
+	 * @param novoFator      novo fator do produto
 	 */
 	public void editaCombo(String nome, String descricao, String nomeFornecedor, String novoFator) {
 		this.gc.editaCombo(nome, descricao, nomeFornecedor, novoFator);
 	}
-	
+
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PRODUTOS
 
 	/**
@@ -199,6 +201,7 @@ public class FacadeSAGA {
 	 * Metodo que exibe todoss produtos de um fornecedor
 	 * 
 	 * @param nomeFornecedor nome do fornecedor dos produtos
+	 * 
 	 * @return String com todos os produtos de um fornecedor
 	 */
 	public String exibeProdutosFornecedor(String nomeFornecedor) {
@@ -226,27 +229,68 @@ public class FacadeSAGA {
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CONTAS / COMPRAS
-	
+
+	/**
+	 * Metodo que adiciona uma compra de um cliente
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @param data           data da compra
+	 * @param nomeProd       nome do produto comprado
+	 * @param descrProd      descricao do produto comprado
+	 * @return String com o id da conta do cliente
+	 */
 	public String adicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd, String descrProd) {
 		return this.gc.adicionaCompra(cpf, nomeFornecedor, data, nomeProd, descrProd);
 	}
-	
+
+	/**
+	 * Metodo que pega o debito da conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @return String com o preco da divida
+	 */
 	public String getDebito(String cpf, String nomeFornecedor) {
-		return this.gc.getDebito(cpf , nomeFornecedor);
+		return this.gc.getDebito(cpf, nomeFornecedor);
 	}
 
+	/**
+	 * Metodo que exibe uma determinada conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 * @return Strinf com a conta especificada
+	 */
 	public String exibeContas(String cpf, String nomeFornecedor) {
 		return this.gc.exibeContas(cpf, nomeFornecedor);
 	}
 
+	/**
+	 * Metodo que exibe todas as contas de um cliente
+	 * 
+	 * @param cpf cpf do cliente
+	 * @return String com todas as contas do cliente
+	 */
 	public String exibeContasClientes(String cpf) {
 		return this.gc.exibeContasCliente(cpf);
 	}
-	
+
+	/**
+	 * Metodo que realiza o pagamento de determinada conta
+	 * 
+	 * @param cpf            cpf do cliente
+	 * @param nomeFornecedor nome do fornecedor
+	 */
+	public void realizaPagamento(String cpf, String nomeFornecedor) {
+		this.gc.realizaPagamento(cpf, nomeFornecedor);
+	}
+
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ EASYACCEPT
 	public static void main(String[] args) {
 		args = new String[] { "lab5.FacadeSAGA", "acc_tst/use_case_1.txt", "acc_tst/use_case_2.txt",
-				"acc_tst/use_case_3.txt", "acc_tst/use_case_4.txt", "acc_tst/use_case_5.txt" };
+				"acc_tst/use_case_3.txt", "acc_tst/use_case_4.txt", "acc_tst/use_case_5.txt", "acc_tst/use_case_6.txt",
+				"acc_tst/use_case_7.txt" };
 		EasyAccept.main(args);
 	}
 }

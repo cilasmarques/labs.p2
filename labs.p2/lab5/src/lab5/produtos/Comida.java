@@ -18,6 +18,10 @@ public abstract class Comida implements Produto, Comparable<Comida>{
 	public String getId() {
 		return this.nome + " - " + this.descricao;
 	}
+
+	public String getNome() {
+		return this.nome;
+	}
 	
 	/**
 	 * Metodo que permite mudar a descricao

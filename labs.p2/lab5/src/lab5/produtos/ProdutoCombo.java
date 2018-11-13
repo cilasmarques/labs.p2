@@ -20,13 +20,18 @@ public class ProdutoCombo extends Comida implements Produto, Promocao {
 	}
 
 	@Override
+	public double getPreco() {
+		return getPrecoGeral(this.produtos);
+	}
+
+	@Override
 	public String toString() {
 		return this.nome + " - " + this.descricao + " - R$" + getPrecoComPromo().replace(".", ",");
 	}
 
 	@Override
 	public String getPrecoComPromo() {
-		double preco = getPreco(produtos);
+		double preco = getPrecoGeral(this.produtos);
 		double fator = Double.parseDouble(this.fator);
 		return String.format("%.2f", aplicaPromo(preco, fator));
 	}
@@ -67,7 +72,7 @@ public class ProdutoCombo extends Comida implements Produto, Promocao {
 		return true;
 	}
 
-	private double getPreco(String produtos) {
+	private double getPrecoGeral(String produtos) {
 		double preco = 0.0;
 		for (String palavra : produtos.split(" ")) {
 			if (palavra.contains("R$"))
@@ -76,5 +81,4 @@ public class ProdutoCombo extends Comida implements Produto, Promocao {
 		return preco;
 	}
 
-	
 }

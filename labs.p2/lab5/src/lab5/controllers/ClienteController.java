@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lab5.pessoas.Cliente;
+import lab5.produtos.Comida;
 
 /**
  * Controlador de cliente
@@ -101,22 +102,21 @@ public class ClienteController {
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CONTAS / COMPRAS
 	
-	public String adicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd, String descrProd) {
-		return clienteValido(cpf, "ao cadastrar compra").adicionaCompra(cpf, nomeFornecedor, data, nomeProd, descrProd);
+	public String adicionaCompra(String cpf, String nomeFornecedor, String data, Comida produto) {
+		return clienteValido(cpf, "ao cadastrar compra").adicionaCompra(cpf, nomeFornecedor, data, produto);
 	}
 	
 	public String getDebito(String cpf, String nomeFornecedor) {
-		return clienteValido(cpf, "no getDebito da conta").getDebito(cpf , nomeFornecedor);
+		return clienteValido(cpf, "ao recuperar debito").getDebito(cpf , nomeFornecedor);
 	}
 
 	public String exibeContas(String cpf, String nomeFornecedor) {
-		return clienteValido(cpf, "na exibicao da conta").exibeContas(cpf, nomeFornecedor);
+		return clienteValido(cpf, "ao exibir conta do cliente").exibeContas(cpf, nomeFornecedor);
 	}
 
 	public String exibeContasCliente(String cpf) {
-		return clienteValido(cpf, "na exibicao de todas as contas").exibeTodasContas();
+		return clienteValido(cpf, "ao exibir contas do cliente").exibeTodasContas(cpf);
 	}
-
 	
 	/**
 	 * Metodo que pega um fornecedor valido

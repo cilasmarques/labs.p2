@@ -258,7 +258,7 @@ public class Fornecedor implements Comparable<Fornecedor> {
 			if (!this.produtos.containsKey(idProduto))
 				throw new Error("Erro no cadastro de combo: produto nao existe.");
 			else if (this.produtos.containsKey(idProduto) && this.produtos.get(idProduto).getClass().equals(ProdutoCombo.class))
-				throw new Error("Erro no cadastro de combo: um combo n�o pode possuir combos na lista de produtos.");
+				throw new Error("Erro no cadastro de combo: um combo nao pode possuir combos na lista de produtos.");
 		}
 		return true;
 	}

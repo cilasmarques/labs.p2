@@ -6,7 +6,6 @@ import java.util.Map;
 
 import lab5.pessoas.Cliente;
 import lab5.pessoas.Fornecedor;
-import lab5.produtos.Comida;
 
 public class Util {
 
@@ -17,8 +16,7 @@ public class Util {
 		verificadorParametro(nome, "Erro no cadastro do cliente: nome nao pode ser vazio ou nulo.");
 		verificadorParametro(email, "Erro no cadastro do cliente: email nao pode ser vazio ou nulo.");
 		verificadorParametro(localizacao, "Erro no cadastro do cliente: localizacao nao pode ser vazia ou nula.");
-		if (cpf.length() != 11)
-			throw new Error("Erro no cadastro do cliente: cpf invalido.");
+		verifcadorCPF(cpf,"Erro no cadastro do cliente: cpf invalido.");
 	}
 
 	public void verificadorAdicionaFornecedor(String nome, String email, String telefone, Map<String, Fornecedor> map) {
@@ -88,8 +86,25 @@ public class Util {
 		verificadorParametro(descricao, "Erro na remocao de produto: descricao nao pode ser vazia ou nula.");
 	}
 
-	public void verificadorAdicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd,
-			String descrProd, Map<String, Fornecedor> fornecedores, Map<String, Comida> produtos, Map<String, Cliente> clientes) {
+	public void verificaGetDebito(String cpf, String nomeFornecedor, Map<String, Fornecedor> fornecedores) {
+		verifcadorCPF(cpf, "Erro ao recuperar debito: cpf invalido.");
+		verificadorParametro(nomeFornecedor, "Erro ao recuperar debito: fornecedor nao pode ser vazio ou nulo.");
+		verificadorNaoExiste(nomeFornecedor, "Erro ao recuperar debito: fornecedor nao existe.", fornecedores);
+	}
+
+	public void verificadorExibeContas(String cpf, String nomeFornecedor, Map<String, Fornecedor> fornecedores) {
+		verifcadorCPF(cpf, "Erro ao exibir conta do cliente: cpf invalido.");
+		verificadorParametro(nomeFornecedor, "Erro ao exibir conta do cliente: fornecedor nao pode ser vazio ou nulo.");
+		verificadorNaoExiste(nomeFornecedor, "Erro ao exibir conta do cliente: fornecedor nao existe.", fornecedores);
+	}
+
+	public void verifcadorCPF(String cpf, String saida) {
+		if (cpf.length() != 11)
+			throw new Error(saida);
+	}
+
+	
+	/*public void verificadorAdicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd, String descrProd, Map<String, Fornecedor> fornecedores, Map<String, Comida> produtos, Map<String, Cliente> clientes) {
 		String id = nomeProd + " - " + descrProd;
 		if (cpf.length() != 11)
 			throw new Error("Erro ao cadastrar compra: cpf invalido.");
@@ -102,7 +117,7 @@ public class Util {
 		if (data.length() != 10)
 			throw new Error("Erro ao cadastrar compra: data invalida.");
 		verificadorNaoExiste(id, "Erro ao cadastrar compra: produto nao existe.", produtos);
-		}
+	}*/
 
 	public ArrayList<?> makeArray(Map<?, ?> map) {
 		ArrayList<Object> arrayDeInfos = new ArrayList<>();

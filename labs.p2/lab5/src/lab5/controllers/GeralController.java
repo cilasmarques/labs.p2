@@ -239,7 +239,23 @@ public class GeralController {
 
 	public String adicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd, String descrProd) {
 		verificadorAdicionaCompra(cpf, nomeFornecedor, data, nomeProd, descrProd);
-		return this.cc.adicionaCompra(cpf, nomeFornecedor, data, nomeProd, descrProd);
+		String produto = nomeProd + " - " + descrProd;
+		return this.cc.adicionaCompra(cpf, nomeFornecedor, data, this.fc.getProdutos(nomeFornecedor).get(produto));
+	}
+
+	public String getDebito(String cpf, String nomeFornecedor) {
+		u.verificaGetDebito(cpf,nomeFornecedor,this.fc.getFornecedores());
+		return this.cc.getDebito(cpf, nomeFornecedor);
+	}
+
+	public String exibeContas(String cpf, String nomeFornecedor) {
+		u.verificadorExibeContas(cpf, nomeFornecedor, this.fc.getFornecedores());
+		return this.cc.exibeContas(cpf, nomeFornecedor);
+	}
+
+	public String exibeContasCliente(String cpf) {
+		u.verifcadorCPF(cpf, "Erro ao exibir contas do cliente: cpf invalido.");
+		return this.cc.exibeContasCliente(cpf);
 	}
 
 	private void verificadorAdicionaCompra(String cpf, String nomeFornecedor, String data, String nomeProd,
@@ -249,7 +265,7 @@ public class GeralController {
 			throw new Error("Erro ao cadastrar compra: cpf invalido.");
 		u.verificadorParametro(data, "Erro ao cadastrar compra: data nao pode ser vazia ou nula.");
 		u.verificadorParametro(nomeProd, "Erro ao cadastrar compra: nome do produto nao pode ser vazio ou nulo.");
-		u.verificadorParametro(descrProd, "Erro ao cadastrar compra: descricao do produto nao pode ser vazia ou nula");
+		u.verificadorParametro(descrProd, "Erro ao cadastrar compra: descricao do produto nao pode ser vazia ou nula.");
 		u.verificadorParametro(nomeFornecedor, "Erro ao cadastrar compra: fornecedor nao pode ser vazio ou nulo.");
 		u.verificadorNaoExiste(nomeFornecedor, "Erro ao cadastrar compra: fornecedor nao existe.", this.fc.getFornecedores());
 		u.verificadorNaoExiste(cpf, "Erro ao cadastrar compra: cliente nao existe.", this.cc.getClientes());
@@ -258,17 +274,5 @@ public class GeralController {
 		u.verificadorNaoExiste(id, "Erro ao cadastrar compra: produto nao existe.", this.fc.getProdutos(nomeFornecedor));
 		//u.verificadorAdicionaCompra(cpf, nomeFornecedor, data, nomeProd, descrProd, this.fc.getFornecedores(), this.fc.getProdutos(nomeFornecedor), this.cc.getClientes());
 	}
-
-	public String getDebito(String cpf, String nomeFornecedor) {
-		return this.cc.getDebito(cpf, nomeFornecedor);
-	}
-
-	public String exibeContas(String cpf, String nomeFornecedor) {
-		return this.cc.exibeContas(cpf, nomeFornecedor);
-	}
-
-	public String exibeContasCliente(String cpf) {
-		return this.cc.exibeContasCliente(cpf);
-	}
-
+	
 }

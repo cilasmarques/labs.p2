@@ -23,7 +23,7 @@ expectError "Erro no cadastro de combo: fator invalido." adicionaCombo fornecedo
 expectError "Erro no cadastro de combo: fator invalido." adicionaCombo fornecedor="Seu Olavo" nome="Tapioca com cafe" descricao="Tapioca de frango com cafe" fator=1 produtos="Tapioca de frango - Tapioca de frango e manteiga, Cafe - Cafe pequeno"
 expectError "Erro no cadastro de combo: combo deve ter produtos." adicionaCombo fornecedor="Seu Olavo" nome="Tapioca com cafe" descricao="Tapioca de frango com cafe" fator=0.7 produtos=""
 expectError "Erro no cadastro de combo: produto nao existe." adicionaCombo fornecedor="Seu Olavo" nome="Tapioca com cafe" descricao="Tapioca de frango com cafe" fator=0.3 produtos="Tapioca de frango - Tapioca de frango e manteiga, Cafe - Cafe pequeno"
-expectError "Erro no cadastro de combo: um combo não pode possuir combos na lista de produtos." adicionaCombo fornecedor="Seu Olavo" nome="Pastel de frango e X-burguer + suco" descricao="Pastel de forno de frango e X-burguer com suco de maracuja" fator=0.3 produtos="Pastel de frango - Pastel de forno de frango, X-burguer + suco - X-burguer com suco de maracuja"
+expectError "Erro no cadastro de combo: um combo nao pode possuir combos na lista de produtos." adicionaCombo fornecedor="Seu Olavo" nome="Pastel de frango e X-burguer + suco" descricao="Pastel de forno de frango e X-burguer com suco de maracuja" fator=0.3 produtos="Pastel de frango - Pastel de forno de frango, X-burguer + suco - X-burguer com suco de maracuja"
 
 ## Exibindo combos ##
 

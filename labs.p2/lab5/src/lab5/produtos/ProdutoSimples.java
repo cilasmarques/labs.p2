@@ -25,6 +25,11 @@ public class ProdutoSimples extends Comida implements Produto {
 	}
 
 	@Override
+	public double getPreco() {
+		return Double.parseDouble(this.preco);
+	}
+	
+	@Override
 	public String toString() {
 		return this.nome + " - " + this.descricao + " - R$" + this.preco.replace(".", ",");
 	}
@@ -59,4 +64,5 @@ public class ProdutoSimples extends Comida implements Produto {
 			return false;
 		return true;
 	}
+	
 }

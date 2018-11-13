@@ -239,7 +239,7 @@ public class FacadeSAGA {
 		return this.gc.exibeContas(cpf, nomeFornecedor);
 	}
 
-	public String exibeContasCliente(String cpf) {
+	public String exibeContasClientes(String cpf) {
 		return this.gc.exibeContasCliente(cpf);
 	}
 	

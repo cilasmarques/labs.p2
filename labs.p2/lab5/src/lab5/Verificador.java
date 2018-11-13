@@ -5,7 +5,7 @@ import java.util.Map;
 import lab5.pessoas.Cliente;
 import lab5.pessoas.Fornecedor;
 
-public class Util {
+public class Verificador {
 
 	/**
 	 * 

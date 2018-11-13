@@ -289,8 +289,7 @@ public class FacadeSAGA {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ EASYACCEPT
 	public static void main(String[] args) {
 		args = new String[] { "lab5.FacadeSAGA", "acc_tst/use_case_1.txt", "acc_tst/use_case_2.txt",
-				"acc_tst/use_case_3.txt", "acc_tst/use_case_4.txt", "acc_tst/use_case_5.txt", "acc_tst/use_case_6.txt",
-				"acc_tst/use_case_7.txt" };
+				"acc_tst/use_case_3.txt", "acc_tst/use_case_4.txt", "acc_tst/use_case_5.txt", "acc_tst/use_case_6.txt"};
 		EasyAccept.main(args);
 	}
 }

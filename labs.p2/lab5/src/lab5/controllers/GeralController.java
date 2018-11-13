@@ -1,6 +1,6 @@
 package lab5.controllers;
 
-import lab5.Util;
+import lab5.Verificador;
 
 /**
  * @author cilas
@@ -10,12 +10,12 @@ public class GeralController {
 
 	private ClienteController cc;
 	private FornecedorController fc;
-	private Util u;
+	private Verificador u;
 
 	public GeralController() {
 		this.cc = new ClienteController();
 		this.fc = new FornecedorController();
-		this.u = new Util();
+		this.u = new Verificador();
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CLIENTES

@@ -4,7 +4,6 @@ import lab5.Verificador;
 
 /**
  * @author cilas
- *
  */
 public class GeralController {
 
